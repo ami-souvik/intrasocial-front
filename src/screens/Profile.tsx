@@ -8,7 +8,7 @@ export default function Profile() {
     useEffect(() => {
         get('auth/users').then(res => setUser(res.data))
     }, [])
-    return <div>
+    return <div className="fixed">
         <button onClick={handleSignOut}>Sign Out</button>
         <p>{user.username}</p>
         <p>{user.first_name}</p>

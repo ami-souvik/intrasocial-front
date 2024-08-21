@@ -17,10 +17,17 @@ export default function ContentForm() {
         })
     }
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
-            <input className="px-2 py-1 text-2xl" placeholder="title" {...register("title")} />
-            <input className="px-2 py-1" placeholder="body"  {...register("body")} />
-            <button type="submit">Post</button>
-        </form>
+        <div className="flex bg-neutral-900 p-4 border border-slate-600 rounded-lg">
+            <div className="w-12 h-12 flex justify-center items-center">
+                <p className="text-3xl">{String.fromCodePoint(parseInt('1f355', 16))}</p>
+            </div>
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col">
+                <input className="p-2 text-xl border-b border-slate-600 bg-neutral-900" placeholder="Subject" {...register("title")} />
+                <textarea className="p-2 bg-neutral-900 resize-none" placeholder="What is happening?"  {...register("body")} />
+                <div className="flex justify-end">
+                    <button className="w-24 bg-teal-700 rounded-2xl" type="submit">Post</button>
+                </div>
+            </form>
+        </div>
     );
 }

@@ -9,7 +9,7 @@ function App() {
         <div className='w-[275px]'>
           <Profile />
         </div>
-        <div className='flex-1 max-w-[800px]'>
+        <div className='w-3/5'>
           <Feed />
         </div>
       </div>
