@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 export function getPersistState(key: string) {
-  return JSON.parse(localStorage.getItem(key) || '')
+  return JSON.parse(localStorage.getItem(key) || 'null')
 }
 
 export function setPersistState<T>(key: string, newState: T) {
@@ -12,7 +12,9 @@ export default <T>(key: string, initialState: T): [T, (v: T) => void] => {
   const [state, setInternalState] = useState<T>(initialState);
 
   useEffect(() => {
-    setInternalState(getPersistState(key));
+    if(getPersistState(key)) {
+      setInternalState(getPersistState(key));
+    }
   }, []);
 
   const setState = (newState: T): void => {

@@ -10,7 +10,6 @@ export function Feed() {
             .then(res => setContents(res.data))
     }, [])
     return <div className="flex flex-col">
-        <ContentForm />
         {contents.map((each, idx) => <Content key={idx} data={each} />)}
     </div>
 }

@@ -18,8 +18,8 @@ export default function ContentForm() {
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
-            <input className="px-4 py-2 text-4xl" placeholder="title" {...register("title")} />
-            <input className="px-4 py-2" placeholder="body"  {...register("body")} />
+            <input className="px-2 py-1 text-2xl" placeholder="title" {...register("title")} />
+            <input className="px-2 py-1" placeholder="body"  {...register("body")} />
             <button type="submit">Post</button>
         </form>
     );

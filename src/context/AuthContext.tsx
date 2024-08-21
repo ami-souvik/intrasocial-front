@@ -1,10 +1,11 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 import axios from 'axios';
 import SignIn, { type SignInFormInputs } from '../components/forms/SignIn';
 import { useEnvars } from '../hooks/useEnvars';
 import usePersistState from '../hooks/usePersistState';
 
 type AuthProps = {
+  handleSignOut?: () => void
   access?: string | null
   refresh?: string | null
 }
@@ -34,13 +35,12 @@ export default function AuthProvider({ children }: { children: any }) {
     setToken(tokenDefault)
   }
   return (
-    <AuthContext.Provider value={{ ...token }}>
-      { !(token.access || token.refresh) ? <SignIn onSubmit={handleSignIn} /> :
-        <div className='flex flex-col space-y-4'>
-          <button onClick={handleSignOut}>Sign Out</button>
-          {children}
-        </div>
-      }
+    <AuthContext.Provider value={{ handleSignOut, ...token }}>
+      { !(token.access || token.refresh) ? <SignIn onSubmit={handleSignIn} /> : children }
     </AuthContext.Provider>
   )
+}
+
+export function useAuth() {
+  return useContext(AuthContext)
 }

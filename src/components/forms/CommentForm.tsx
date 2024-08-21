@@ -17,7 +17,7 @@ export default function CommentForm({ contentId }: { contentId: string }) {
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-2">
-            <textarea rows={3} className="px-4 py-2" placeholder="body"  {...register("body")} />
+            <textarea rows={2} className="px-2 py-1" placeholder="body" {...register("body")} />
             <button type="submit">Comment</button>
         </form>
     );
