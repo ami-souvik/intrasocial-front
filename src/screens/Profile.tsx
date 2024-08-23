@@ -33,8 +33,7 @@ export default function Profile() {
             <div className="space-y-2">
                 <Avatar emoji_unicode={user.emoji_unicode} />
                 <p>{user.username}</p>
-                <p>{user.first_name}</p>
-                <p>{user.last_name}</p>
+                <p>{user.first_name} {user.last_name}</p>
                 <p>{user.email}</p>
                 <button className="bg-teal-700 rounded-2xl"
                     onClick={() => setShowEdit(true)}>Edit</button>

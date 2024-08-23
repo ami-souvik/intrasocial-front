@@ -1,4 +1,4 @@
-export default function Avatar({ size, emoji_unicode }: { size: "sm" | "md" | "lg" | "xl", emoji_unicode: string }) {
+export default function Avatar({ size="lg", emoji_unicode }: { size?: "sm" | "md" | "lg" | "xl", emoji_unicode: string }) {
     const sizemap = {
         "sm": {
             text: "lg"
