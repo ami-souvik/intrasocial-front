@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-import CommentForm from "../../components/forms/CommentForm";
-import { get } from "../../utils/webservice";
+import { useState } from "react";
 import Avatar from "../../components/Avatar";
-import Comment from "./Comment";
+import CommentListView from "../../components/views/CommentListView";
 
 export type Content = {
     id: number,
@@ -20,11 +18,7 @@ export type Content = {
 }
 
 export function Content({ data }: { data: Content }) {
-    const [comments, setComments] = useState([])
-    useEffect(() => {
-        get(`comment/${data.id}`)
-            .then(res => setComments(res.data))
-    }, [])
+    const [showComment, setShowComment] = useState(false);
     return <div className="flex-1 py-4">
         <div className="flex items-center space-x-2">
             <Avatar size="sm" emoji_unicode={data.owner.emoji_unicode} />
@@ -34,9 +28,7 @@ export function Content({ data }: { data: Content }) {
             <h3 className="text-3xl font-bold">{data.title}</h3>
             <p>{data.body}</p>
         </div>
-        <div>
-            {comments.map(c =><Comment data={c} />)}
-        </div>
-        <CommentForm contentId={data.id} />
+        {showComment ? <CommentListView contentId={data.id} /> :
+        <button className="mb-2" onClick={() => setShowComment(true)}>Comment</button>}
     </div>
 }

@@ -5,26 +5,35 @@ type CommentFormInputs = {
     body: string
 }
 
-export default function CommentForm({ contentId }: { contentId: string }) {
+type CommentFormProps = {
+    contentId: number
+    onSubmitSuccess: (v: CommentFormInputs) => void
+}
+
+export default function CommentForm({ contentId, onSubmitSuccess }
+    :CommentFormProps) {
     const {
         register,
         handleSubmit,
         reset,
     } = useForm<CommentFormInputs>();
     function onSubmit(data: CommentFormInputs) {
-        post<CommentFormInputs>(`comment/${contentId}`, data).then(() => {
+        post<CommentFormInputs>(`comment/${contentId}`, data).then((res) => {
+            console.log("CALLED");
             reset()
+            onSubmitSuccess(res.data)
         })
         .catch(err => {
             alert(String(err))
         });
     }
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col bg-neutral-900 border border-slate-600 rounded-lg p-2">
-            <textarea rows={2} className="px-2 py-1 bg-neutral-900 resize-none" placeholder="body" {...register("body")} />
+        <div className="flex items-end bg-neutral-900 border border-slate-600 rounded-lg p-2">
+            <textarea rows={2} className="flex-1 px-2 py-1 bg-neutral-900 resize-none" placeholder="body" {...register("body")} />
             <div className="flex justify-end">
-                <button className="bg-teal-700 rounded-2xl" type="submit">Comment</button>
+                <p className="text-2xl cursor-pointer" onClick={handleSubmit(onSubmit)}>
+                    {String.fromCodePoint(parseInt('1F5E8', 16))}</p>
             </div>
-        </form>
+        </div>
     );
 }

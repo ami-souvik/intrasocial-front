@@ -1,4 +1,4 @@
-import Avatar from "../../components/Avatar"
+import Avatar from "../Avatar"
 
 export type Comment = {
     id: number,
@@ -15,7 +15,7 @@ export type Comment = {
     updated_at: string
 }
 
-export default function Comment({ data }: { data: Comment }) {
+export default function CommentView({ data }: { data: Comment }) {
     return <div>
         <div className="flex space-x-2 items-center">
             <Avatar size="sm" emoji_unicode={data.owner.emoji_unicode} />
