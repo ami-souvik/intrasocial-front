@@ -41,7 +41,7 @@ export default function CommentListView({ comments=[], contentId: id }:
           }
         })
         .then(({ data: resData }) => {
-            if(resData.comments.length < data.last) {
+            if(resData.comments.length < COMMENT_RECORD_LEN) {
                 setEoc(true)
             }
             setData(prev => ({
@@ -56,7 +56,7 @@ export default function CommentListView({ comments=[], contentId: id }:
     function onSubmitSuccess() {}
     return <div>
         {data.comments.map((c: Comment, idx: number) =><CommentView key={idx} data={c} />)}
-        {!eoc && <a className="cursor-pointer" onClick={fetchComments}>Show More...</a>}
+        {!eoc && <a className="cursor-pointer text-slate-300" onClick={fetchComments}>Show More...</a>}
         <CommentForm contentId={id} onSubmitSuccess={onSubmitSuccess} />
     </div>
 }

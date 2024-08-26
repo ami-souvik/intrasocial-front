@@ -28,6 +28,11 @@ export function Content({ data }: { data: Content }) {
         <div className="flex flex-1 flex-col my-2 bg-black rounded-xl p-4">
             <h3 className="text-3xl font-bold">{data.title}</h3>
             <p>{data.body}</p>
+        </div>
+        <div className="flex justify-between my-2">
+            <div className="px-4 bg-slate-600 rounded-lg">
+                <p className="text-lg">👍</p>
+            </div>
             <p className="text-sm self-end">{formatDatetime(new Date(data.createdAt))}</p>
         </div>
         <CommentListView comments={data.comments} contentId={data.id} />

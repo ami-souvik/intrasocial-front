@@ -27,19 +27,9 @@ export default function CommentForm({ contentId, onSubmitSuccess }
             alert(String(err))
         });
     }
-    const inputRef = useRef(null);
-    inputRef.current?.keypress(function (e) {
-        console.log(e.which);
-        if(e.which === 13 && !e.shiftKey) {
-            e.preventDefault();
-        
-            // $(this).closest("form").submit();
-        }
-    });
     return (
         <div className="flex items-end bg-neutral-900 border border-slate-600 rounded-lg p-2">
-            <textarea ref={inputRef} rows={2} className="flex-1 px-2 py-1 bg-neutral-900 resize-none" placeholder="body" />
-            {/* {...register("body")} */}
+            <textarea rows={2} className="flex-1 px-2 py-1 bg-neutral-900 resize-none" placeholder="body" {...register("body")} />
             <div className="flex justify-end">
                 <p className="text-2xl cursor-pointer" onClick={handleSubmit(onSubmit)}>
                     {String.fromCodePoint(parseInt('1F5E8', 16))}</p>

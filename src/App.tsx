@@ -6,10 +6,10 @@ function App() {
   return (
     <AuthProvider>
       <div className='flex'>
-        <div className='w-[275px]'>
+        <div className='hidden md:block w-[0px] md:w-[275px]'>
           <Profile />
         </div>
-        <div className='w-3/5'>
+        <div className='w-screen md:w-3/5'>
           <Feed />
         </div>
       </div>
