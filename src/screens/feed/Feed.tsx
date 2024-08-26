@@ -29,6 +29,7 @@ const CONTENTS_QUERY = gql`
           email
         }
       }
+      createdAt
     }
   }
 `

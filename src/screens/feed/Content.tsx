@@ -1,6 +1,7 @@
 import Avatar from "../../components/Avatar";
 import CommentListView from "../../components/views/CommentListView";
 import { type Comment } from "../../components/views/CommentView";
+import { formatDatetime } from "../../utils/datetime";
 
 export type Content = {
     id: number,
@@ -27,6 +28,7 @@ export function Content({ data }: { data: Content }) {
         <div className="flex flex-1 flex-col my-2 bg-black rounded-xl p-4">
             <h3 className="text-3xl font-bold">{data.title}</h3>
             <p>{data.body}</p>
+            <p className="text-sm self-end">{formatDatetime(new Date(data.createdAt))}</p>
         </div>
         <CommentListView comments={data.comments} contentId={data.id} />
     </div>
