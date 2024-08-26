@@ -4,7 +4,7 @@ import { getPersistState, setPersistState } from "../hooks/usePersistState";
 
 const { VITE_API_BASE_URL } = useEnvars()
 
-function checkRefresh() {
+export async function checkRefresh() {
     const { access, refresh } = getPersistState('token');
     if(Number(atob(access.split('.')[1])["exp"]) > Math.floor(Date.now()/1000))
         return access;

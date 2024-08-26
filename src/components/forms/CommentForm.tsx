@@ -7,7 +7,7 @@ type CommentFormInputs = {
 
 type CommentFormProps = {
     contentId: number
-    onSubmitSuccess: (v: CommentFormInputs) => void
+    onSubmitSuccess: () => void
 }
 
 export default function CommentForm({ contentId, onSubmitSuccess }
@@ -18,10 +18,9 @@ export default function CommentForm({ contentId, onSubmitSuccess }
         reset,
     } = useForm<CommentFormInputs>();
     function onSubmit(data: CommentFormInputs) {
-        post<CommentFormInputs>(`comment/${contentId}`, data).then((res) => {
-            console.log("CALLED");
+        post<CommentFormInputs>(`comment/${contentId}`, data).then(() => {
             reset()
-            onSubmitSuccess(res.data)
+            onSubmitSuccess()
         })
         .catch(err => {
             alert(String(err))

@@ -3,26 +3,29 @@ import Avatar from "../Avatar"
 export type Comment = {
     id: number,
     owner: {
-        emoji_unicode: string,
+        emojiUnicode: string,
         username: string,
-        first_name: string,
-        last_name: string,
+        firstName: string,
+        lastName: string,
         email: string,
     },
     content: number,
     body: string,
-    created_at: string,
-    updated_at: string
+    createdAt: string,
+    updatedAt: string
 }
 
 export default function CommentView({ data }: { data: Comment }) {
     return <div>
         <div className="flex space-x-2 items-center">
-            <Avatar size="sm" emoji_unicode={data.owner.emoji_unicode} />
-            <p className="font-bold">{data.owner.first_name} {data.owner.last_name}</p>
+            <Avatar size="sm" emoji_unicode={data.owner.emojiUnicode} />
+            <p className="font-bold">{data.owner.firstName} {data.owner.lastName}</p>
         </div>
         <div className="my-2">
             <p>{data.body}</p>
+        </div>
+        <div>
+            <p>{data.createdAt}</p>
         </div>
     </div>
 }
