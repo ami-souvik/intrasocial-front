@@ -8,6 +8,10 @@ export function setPersistState<T>(key: string, newState: T) {
   localStorage.setItem(key, JSON.stringify(newState));
 }
 
+export function removePersistedState(key: string) {
+  localStorage.removeItem(key);
+}
+
 export default <T>(key: string, initialState: T): [T, (v: T) => void] => {
   const [state, setInternalState] = useState<T>(initialState);
 

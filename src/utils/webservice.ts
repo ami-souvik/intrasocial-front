@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useEnvars } from "../hooks/useEnvars";
-import { getPersistState, setPersistState } from "../hooks/usePersistState";
+import { getPersistState, removePersistedState, setPersistState } from "../hooks/usePersistState";
 
 const { VITE_API_BASE_URL } = useEnvars()
 
 export async function checkRefresh() {
     const { access, refresh } = getPersistState('token');
-    if(Number(atob(access.split('.')[1])["exp"]) > Math.floor(Date.now()/1000))
+    if(Number(JSON.parse(atob(access.split('.')[1])).exp) > Math.floor(Date.now()/1000))
         return access;
     return axios.post(`${VITE_API_BASE_URL}/api/v1/token/refresh/`, { refresh })
         .then(res => {
@@ -14,7 +14,9 @@ export async function checkRefresh() {
             return res.data.access
         })
         .catch(err => {
-            alert(String(err))
+            if(err.response.data.code === "token_not_valid")
+                removePersistedState('token')
+            else alert(String(err))
         });
 }
 

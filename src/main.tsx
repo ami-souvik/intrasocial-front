@@ -5,7 +5,7 @@ import { setContext } from '@apollo/client/link/context';
 import App from './App.tsx'
 import './index.css'
 
-import { checkRefresh } from './utils/webservice.ts';
+import { checkRefresh } from './utils/webservice';
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:8000/graphql/',
