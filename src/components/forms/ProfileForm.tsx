@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { gql, useApolloClient } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import EmojiPicker from "../EmojiPicker";
 
 export type ProfileFormInputs = {
@@ -30,7 +30,6 @@ const UPDATE_USER_MUTATION = gql`
 `
 
 export default function ProfileForm({ initialValues, onSubmitSuccess }: { initialValues: ProfileFormInputs, onSubmitSuccess: (v: ProfileFormInputs) => void }) {
-    const client = useApolloClient();
     const {
         control,
         register,
@@ -38,22 +37,11 @@ export default function ProfileForm({ initialValues, onSubmitSuccess }: { initia
     } = useForm<ProfileFormInputs>({
         defaultValues: initialValues
     });
-    function updateCurrent(data: ProfileFormInputs) {
-        client.mutate({
-            mutation: UPDATE_USER_MUTATION,
-            variables: {
-                emojiUnicode: data.emojiUnicode,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                email: data.email
-            }
-        })
-        .then(({ data }) => {
-            onSubmitSuccess(data.updateCurrent.current)
-        })
-    }
+    const [updateCurrent, { data: currentData, loading, error }] = useMutation(UPDATE_USER_MUTATION);
+    console.log({ currentData, loading, error });
     function onSubmit(data: ProfileFormInputs) {
-        updateCurrent(data)
+        updateCurrent({ variables: { ...data } })
+        onSubmitSuccess(currentData)
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center bg-neutral-900 border border-slate-600 rounded-xl p-4 space-y-2">
