@@ -1,43 +1,59 @@
-import { useEffect, useState } from "react"
-import { get } from "../utils/webservice";
+import { useState } from "react"
+import { gql, useQuery } from "@apollo/client";
 import { useAuth } from "../context/AuthContext";
 import ProfileForm from "../components/forms/ProfileForm";
 import Avatar from "../components/Avatar";
+import ProfileSearch from "../components/forms/ProfileSearch";
 
-type ProfileProps = {
-    username: string
-    emoji_unicode: string
-    first_name: string
-    last_name: string
-    email: string
-}
+const CURRENT_QUERY = gql`
+  query {
+    current {
+      username
+      emojiUnicode
+      firstName
+      lastName
+      email
+    }
+  }
+`
 
 export default function Profile() {
     const { handleSignOut } = useAuth();
     const [showEdit, setShowEdit] = useState(false);
-    const [user, setUser] = useState<ProfileProps>();
-    useEffect(() => {
-        get('auth/users').then(res => setUser(res.data))
-    }, [])
-    return <div className="fixed my-4 mx-8 space-y-2">
-        {user && showEdit &&
+    const { data, loading, error,refetch } = useQuery(CURRENT_QUERY);
+    function onUpdate() {
+        setShowEdit(false)
+        refetch()
+    }
+    if (loading) return "Loading...";
+    if (error) return <pre>{error.message}</pre>
+    return <div className="flex flex-col m-4">
+        {data.current && showEdit &&
             <div className="fixed top-0 left-0 bg-black bg-opacity-50 w-screen h-screen flex justify-center items-center">
                 <div className="flex flex-col items-end">
                     <button onClick={() => setShowEdit(false)}>close</button>
-                    <ProfileForm initialValues={user} onSubmitSuccess={() => setShowEdit(false)}/>
+                    <ProfileForm initialValues={data.current} onSubmitSuccess={onUpdate}/>
                 </div>
             </div>
         }
-        <button onClick={handleSignOut}>Sign Out</button>
-        {user &&
-            <div className="space-y-2">
-                <Avatar emoji_unicode={user.emoji_unicode} />
-                <p>{user.username}</p>
-                <p>{user.first_name} {user.last_name}</p>
-                <p>{user.email}</p>
-                <button className="bg-teal-700 rounded-2xl"
-                    onClick={() => setShowEdit(true)}>Edit</button>
-            </div>
-        }
+        <div className="space-y-8">
+            <ProfileSearch />
+            {data.current &&
+                <div className="space-y-2">
+                    <div className="flex justify-between items-end">
+                        <Avatar emojiUnicode={data.current.emojiUnicode} />
+                        <button className="bg-teal-700 rounded-2xl"
+                            onClick={() => setShowEdit(true)}>Edit</button>
+                    </div>
+                    <div className="flex">
+                        <p className="opacity-50">@</p>
+                        <p className="italic">{data.current.username}</p>
+                    </div>
+                    <p>{data.current.firstName} {data.current.lastName}</p>
+                    <p>{data.current.email}</p>
+                </div>
+            }
+            <button onClick={handleSignOut}>Sign Out</button>
+        </div>
     </div>
 }

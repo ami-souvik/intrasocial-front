@@ -1,40 +1,66 @@
 import { useForm } from "react-hook-form";
-import { post } from "../../utils/webservice";
+import { gql, useApolloClient } from "@apollo/client";
 import EmojiPicker from "../EmojiPicker";
 
 export type ProfileFormInputs = {
-    emoji_unicode: string
-    first_name: string
-    last_name: string
+    emojiUnicode: string
+    firstName: string
+    lastName: string
     email: string
 }
+const UPDATE_USER_MUTATION = gql`
+    mutation updateCurrent(
+      $emojiUnicode: String!,
+      $firstName: String!,
+      $lastName: String!,
+      $email: String!) {
+    updateCurrent(
+      emojiUnicode: $emojiUnicode,
+      firstName: $firstName,
+      lastName: $lastName,
+      email: $email) {
+        current {
+          emojiUnicode
+          firstName
+          lastName
+          email
+        }
+      }
+  }
+`
 
-export default function ProfileForm({ initialValues, onSubmitSuccess }: { initialValues: ProfileFormInputs, onSubmitSuccess: () => void }) {
+export default function ProfileForm({ initialValues, onSubmitSuccess }: { initialValues: ProfileFormInputs, onSubmitSuccess: (v: ProfileFormInputs) => void }) {
+    const client = useApolloClient();
     const {
         control,
         register,
         handleSubmit,
-        reset,
     } = useForm<ProfileFormInputs>({
         defaultValues: initialValues
     });
-    function onSubmit(data: ProfileFormInputs) {
-        post<ProfileFormInputs>('auth/users/update', data).then(() => {
-            console.log(data);
-            reset()
-            onSubmitSuccess()
+    function updateCurrent(data: ProfileFormInputs) {
+        client.mutate({
+            mutation: UPDATE_USER_MUTATION,
+            variables: {
+                emojiUnicode: data.emojiUnicode,
+                firstName: data.firstName,
+                lastName: data.lastName,
+                email: data.email
+            }
         })
-        .catch(err => {
-            console.log(err);
-            alert(String(err))
-        });
+        .then(({ data }) => {
+            onSubmitSuccess(data.updateCurrent.current)
+        })
+    }
+    function onSubmit(data: ProfileFormInputs) {
+        updateCurrent(data)
     }
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col bg-neutral-900 border border-slate-600 rounded-lg p-2">
-            <EmojiPicker name="emoji_unicode" control={control} />
-            <input className="p-2 text-xl border-b border-slate-600 bg-neutral-900" placeholder="first_name" {...register("first_name")} />
-            <input className="p-2 text-xl border-b border-slate-600 bg-neutral-900" placeholder="last_name" {...register("last_name")} />
-            <input className="p-2 text-xl border-b border-slate-600 bg-neutral-900" placeholder="email" {...register("email")} />
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center bg-neutral-900 border border-slate-600 rounded-xl p-4 space-y-2">
+            <EmojiPicker name="emojiUnicode" control={control} />
+            <input className="p-2 text-xl border-b border-slate-600 bg-neutral-900" placeholder="First Name" {...register("firstName")} />
+            <input className="p-2 text-xl border-b border-slate-600 bg-neutral-900" placeholder="Last Name" {...register("lastName")} />
+            <input className="p-2 text-xl border-b border-slate-600 bg-neutral-900" placeholder="Email" {...register("email")} />
             <div className="flex justify-end">
                 <button className="bg-teal-700 rounded-2xl" type="submit">Update</button>
             </div>

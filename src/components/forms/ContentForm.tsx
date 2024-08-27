@@ -23,7 +23,7 @@ export default function ContentForm() {
     }
     return (
         <div className="flex my-4 bg-neutral-900 p-4 border border-slate-600 rounded-lg">
-            {/* <Avatar emoji_unicode={user.emoji_unicode} /> */}
+            {/* <Avatar emojiUnicode={user.emojiUnicode} /> */}
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col">
                 <input className="p-2 text-xl border-b border-slate-600 bg-neutral-900" placeholder="Subject" {...register("title")} />
                 <textarea className="p-2 bg-neutral-900 resize-none" placeholder="What is happening?"  {...register("body")} />

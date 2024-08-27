@@ -40,9 +40,9 @@ export default function CommentView({ data }: { data: Comment }) {
         }
     }
     return <div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-end">
             <div className="flex space-x-2 items-center">
-                <Avatar size="sm" emoji_unicode={data.owner.emojiUnicode} />
+                <Avatar size="sm" emojiUnicode={data.owner.emojiUnicode} />
                 <div>
                     <p className="font-bold">{data.owner.firstName} {data.owner.lastName}</p>
                     <p className="text-sm">{formatDatetime(new Date(data.createdAt))}</p>

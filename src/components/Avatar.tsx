@@ -1,4 +1,4 @@
-export default function Avatar({ size="lg", emoji_unicode }: { size?: "sm" | "md" | "lg" | "xl", emoji_unicode: string }) {
+export default function Avatar({ size="lg", emojiUnicode }: { size?: "sm" | "md" | "lg" | "xl", emojiUnicode: string }) {
     const sizemap = {
         "sm": {
             text: "lg"
@@ -13,7 +13,7 @@ export default function Avatar({ size="lg", emoji_unicode }: { size?: "sm" | "md
             text: "3xl"
         },
     }
-    return emoji_unicode ? <div className="flex">
-        <p className={`px-1.5 py-1 rounded-xl text-center bg-black text-${sizemap[size]?.text || '2xl'}`}>{String.fromCodePoint(parseInt(emoji_unicode, 16))}</p>
+    return emojiUnicode ? <div className="flex">
+        <p className={`px-1.5 py-1 rounded-xl text-center bg-black text-${sizemap[size]?.text || '2xl'}`}>{String.fromCodePoint(parseInt(emojiUnicode, 16))}</p>
     </div> : <></>
 }
