@@ -1,4 +1,4 @@
-import { gql, useApolloClient } from "@apollo/client"
+import { gql, useMutation } from "@apollo/client"
 import Avatar from "../Avatar"
 import { formatDatetime } from "../../utils/datetime"
 import { confirmAction } from "../../utils/popups"
@@ -27,16 +27,14 @@ const DELETE_COMMENT_MUTATION = gql`
 `
 
 export default function CommentView({ data }: { data: Comment }) {
-    const client = useApolloClient();
-    function deleteComment() {
+    const [deleteComment] = useMutation(DELETE_COMMENT_MUTATION);
+    function handleDeleteComment() {
         if(confirmAction({ what: 'comment' })) {
-            client.mutate({
-                mutation: DELETE_COMMENT_MUTATION,
+            deleteComment({
                 variables: {
                     id: data.id
                 }
             })
-            .then(({ data }) => console.log(data))
         }
     }
     return <div>
@@ -48,7 +46,7 @@ export default function CommentView({ data }: { data: Comment }) {
                     <p className="text-sm">{formatDatetime(new Date(data.createdAt))}</p>
                 </div>
             </div>
-            <p className="text-lg cursor-pointer" onClick={deleteComment}>🗑️</p>
+            <p className="text-lg cursor-pointer" onClick={handleDeleteComment}>🗑️</p>
         </div>
         <div className="my-2">
             <p>{data.body}</p>
