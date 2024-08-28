@@ -12,6 +12,7 @@
   "dependencies": {
     "@apollo/client": "^3.11.4",
     "@tiptap/extension-color": "^2.6.6",
+    "@tiptap/extension-placeholder": "^2.6.6",
     "@tiptap/extension-text-style": "^2.6.6",
     "@tiptap/react": "^2.6.6",
     "@tiptap/starter-kit": "^2.6.6",

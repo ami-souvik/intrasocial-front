@@ -1,6 +1,5 @@
-import './styles.scss'
-
 import { Controller } from 'react-hook-form'
+import Placeholder from '@tiptap/extension-placeholder'
 import { Color } from '@tiptap/extension-color'
 import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
@@ -8,9 +7,9 @@ import { EditorProvider, JSONContent, useCurrentEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 
 function Button({ active, disabled, children, ...props }: { active: boolean; children: string }) {
-    return <button disabled={disabled} className={`${active ? "bg-[#6A00F5] font-white" : "bg-gray-300 text-black"}`} {...props}>
-        {children}
-    </button>
+  return <button disabled={disabled} className={`m-0.5 ${active ? "bg-[#6A00F5] font-white" : "bg-gray-300 text-black"}`} {...props}>
+    {children}
+  </button>
 }
 
 const MenuBar = () => {
@@ -21,8 +20,8 @@ const MenuBar = () => {
   }
 
   return (
-    <div className="px-2 py-1 mb-8">
-      <div className="space-x-1 space-y-1">
+    <div className="px-2 py-1 mb-4">
+      <div>
         <Button
           active={editor.isActive('bold')}
           onClick={() => editor.chain().focus().toggleBold().run()}
@@ -189,6 +188,9 @@ const MenuBar = () => {
 }
 
 const extensions = [
+  Placeholder.configure({
+    placeholder: 'Tell us your story ...',
+  }),
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
   TextStyle.configure({ types: [ListItem.name] }),
   StarterKit.configure({
@@ -217,7 +219,7 @@ export default ({ name, control }) => {
             extensions={extensions}
             content={value}
             onUpdate={({ editor }) => {
-              onChange(editor.getJSON());
+              onChange(editor.getHTML());
             }}>
           </EditorProvider>
         )
