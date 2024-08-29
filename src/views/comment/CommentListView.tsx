@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { gql, useApolloClient } from "@apollo/client"
-import { CONTENT_RELATED_COMMENT_LEN } from "../../screens/feed/Feed"
+import { CONTENT_RELATED_COMMENT_LEN } from "@/screens/feed/Feed"
 import CommentView, { type Comment } from "./CommentView"
-import CommentForm from "../forms/CommentForm"
+import CommentForm from "@/forms/CommentForm"
 
 const COMMENT_RECORD_LEN = 10
 const COMMENTS_QUERY = gql`

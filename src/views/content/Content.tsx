@@ -1,11 +1,11 @@
-import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
-import Avatar from "../../components/Avatar";
-import CommentListView from "../../components/views/CommentListView";
-import { type Comment } from "../../components/views/CommentView";
-import { formatDate } from "../../utils/datetime";
-import { confirmAction } from "../../utils/popups";
-import { useContentForm } from "../../context/ContentFormContext";
+import Avatar from "@/components/Avatar";
+import CommentListView from "@/views/comment/CommentListView";
+import { type Comment } from "@/views/comment/CommentView";
+import { formatDate } from "@/utils/datetime";
+import { confirmAction } from "@/utils/popups";
+import { useContentForm } from "@/context/ContentFormContext";
+import Like from "@/screens/feed/Like";
 
 export type Content = {
     id: number,
@@ -34,7 +34,6 @@ const DELETE_CONTENT_MUTATION = gql`
 
 export function Content({ data }: { data: Content }) {
     const { openContentFormWith } = useContentForm()
-    const [liked, setLiked] = useState(false);
     const [deleteContent] = useMutation(DELETE_CONTENT_MUTATION);
     function handleDeleteContent() {
         if(confirmAction({ what: 'comment' })) {
@@ -56,9 +55,7 @@ export function Content({ data }: { data: Content }) {
                 <div className="px-4 py-2 flex justify-between items-center bg-neutral-900">
                     <h3 className="text-xl font-bold text-wrap truncate">{data.title}</h3>
                     <div className="flex space-x-2">
-                        <div className="rounded-lg cursor-pointer" onClick={() => setLiked(l => !l)}>
-                            <p className={`${liked ? "" : "opacity-50"} text-xl`}>👍</p>
-                        </div>
+                        <Like contentId={data.id} data={data.liked} />
                         <div className="rounded-lg cursor-pointer" onClick={() => openContentFormWith(data)}>
                             <p className="text-xl">📝</p>
                         </div>

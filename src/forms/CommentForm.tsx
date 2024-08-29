@@ -1,5 +1,5 @@
+import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
-import { post } from "../../utils/webservice";
 
 type CommentFormInputs = {
     body: string
@@ -9,6 +9,19 @@ type CommentFormProps = {
     contentId: number
     onSubmitSuccess: () => void
 }
+const CREATE_COMMENT_MUTATION = gql`
+    mutation createComment(
+      $content: ID!
+      $body: String!) {
+    createComment(
+      content: $content,
+      body: $body) {
+        comment {
+          body
+        }
+      }
+  }
+`
 
 export default function CommentForm({ contentId, onSubmitSuccess }
     :CommentFormProps) {
@@ -17,14 +30,11 @@ export default function CommentForm({ contentId, onSubmitSuccess }
         handleSubmit,
         reset,
     } = useForm<CommentFormInputs>();
+    const [createComment] = useMutation(CREATE_COMMENT_MUTATION);
     function onSubmit(data: CommentFormInputs) {
-        post<CommentFormInputs>(`comment/${contentId}`, data).then(() => {
-            reset()
-            onSubmitSuccess()
-        })
-        .catch(err => {
-            alert(String(err))
-        });
+        createComment({ variables: { content: contentId, ...data }})
+        reset()
+        onSubmitSuccess()
     }
     return (
         <div className="flex items-end bg-neutral-900 border border-slate-600 rounded-lg p-2">

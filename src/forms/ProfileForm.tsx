@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
-import EmojiPicker from "../EmojiPicker";
+import EmojiPicker from "../components/EmojiPicker";
 
 export type ProfileFormInputs = {
     emojiUnicode: string

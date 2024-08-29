@@ -1,7 +1,7 @@
 import { gql, useMutation } from "@apollo/client"
-import Avatar from "../Avatar"
-import { formatDatetime } from "../../utils/datetime"
-import { confirmAction } from "../../utils/popups"
+import Avatar from "@/components/Avatar"
+import { formatDatetime } from "@/utils/datetime"
+import { confirmAction } from "@/utils/popups"
 
 export type Comment = {
     id: number,

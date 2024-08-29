@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { gql, useApolloClient } from "@apollo/client";
-import Avatar from "../Avatar";
+import Avatar from "../components/Avatar";
 
 const USER_RECORD_LEN = 10
 const USERS_QUERY = gql`
