@@ -1,4 +1,4 @@
-import ContentFormProvider from "./context/ContentFormContext";
+import ContentFormProvider from "@/context/ContentFormContext";
 
 export default function AppWrapper({ children }: { children: any }) {
   return (

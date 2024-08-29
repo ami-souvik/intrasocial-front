@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import axios from 'axios';
-import SignIn, { type SignInFormInputs } from '../components/forms/SignIn';
+import SignIn, { type SignInFormInputs } from '@/forms/SignIn';
 import { useEnvars } from '../hooks/useEnvars';
 import usePersistState from '../hooks/usePersistState';
 

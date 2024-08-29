@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import ContentForm from "../components/forms/ContentForm";
+import ContentForm from "@/forms/ContentForm";
 
 const ContentFormContext = createContext({});
 

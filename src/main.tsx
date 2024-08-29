@@ -2,13 +2,12 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { setContext } from '@apollo/client/link/context';
-import App from './App.tsx'
-import './index.css'
-
-import { checkRefresh } from './utils/webservice';
+import App from '@/App.tsx'
+import '@/index.css'
+import { checkRefresh } from '@/utils/webservice';
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:8000/graphql/',
+  uri: `${import.meta.env.VITE_API_BASE_URL}/graphql/`,
 });
 
 const authLink = setContext((_, { headers }) => {

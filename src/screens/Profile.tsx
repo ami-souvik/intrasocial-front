@@ -1,9 +1,9 @@
 import { useState } from "react"
 import { gql, useQuery } from "@apollo/client";
 import { useAuth } from "../context/AuthContext";
-import ProfileForm from "../components/forms/ProfileForm";
+import ProfileForm from "@/forms/ProfileForm";
 import Avatar from "../components/Avatar";
-import ProfileSearch from "../components/forms/ProfileSearch";
+import ProfileSearch from "@/forms/ProfileSearch";
 
 const CURRENT_QUERY = gql`
   query {
