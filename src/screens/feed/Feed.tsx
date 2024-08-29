@@ -1,13 +1,22 @@
 import { gql, useQuery } from "@apollo/client";
-import { Content, type Content as ContentType } from "./Content";
+import { Content, type Content as ContentType } from "@/views/content/Content";
 
 export const CONTENT_RELATED_COMMENT_LEN = 2
+export const CONTENT_RELATED_LIKE_LEN = 10
 const CONTENTS_QUERY = gql`
   {
     contents {
       id
       title
       body
+      liked {
+        id
+        user {
+          firstName
+          lastName
+          emojiUnicode
+        }
+      }
       owner {
         id
         username
@@ -26,6 +35,13 @@ const CONTENTS_QUERY = gql`
           firstName
           lastName
           email
+        }
+      }
+      likes(last: ${CONTENT_RELATED_LIKE_LEN}) {
+        user {
+          firstName
+          lastName
+          emojiUnicode
         }
       }
       createdAt
