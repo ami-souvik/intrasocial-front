@@ -1,27 +1,27 @@
 import { gql, useMutation } from "@apollo/client";
 import Avatar from "@/components/Avatar";
-import CommentListView from "@/views/comment/CommentListView";
-import { type Comment } from "@/views/comment/CommentView";
+import CommentList from "@/views/comment/CommentList";
+import { CommentType } from "@/views/comment/Comment";
+import { UserType } from "@/views/user/User";
 import { formatDate } from "@/utils/datetime";
 import { confirmAction } from "@/utils/popups";
 import { useContentForm } from "@/context/ContentFormContext";
-import Like from "@/screens/feed/Like";
+import Like, { LikeType } from "@/views/like/Like";
+import { useLikeList } from "@/context/LikeListContext";
+import Close from "@/components/Close";
 
-export type Content = {
+export type ContentType = {
     id: number,
-    owner: {
-        emojiUnicode: string,
-        username: string,
-        firstName: string,
-        lastName: string,
-        email: string,
-    },
-    comments: Comment[]
+    owner: UserType,
     title: string,
     body: string,
     createdAt: string,
     updatedAt: string,
-    liked: boolean,
+    liked: LikeType[],
+    commentsCount: number,
+    comments: CommentType[],
+    likesCount: number,
+    likes: LikeType[]
 }
 
 const DELETE_CONTENT_MUTATION = gql`
@@ -32,8 +32,9 @@ const DELETE_CONTENT_MUTATION = gql`
   }
 `
 
-export function Content({ data }: { data: Content }) {
+export function Content({ data }: { data: ContentType }) {
     const { openContentFormWith } = useContentForm()
+    const { openLikeList } = useLikeList()
     const [deleteContent] = useMutation(DELETE_CONTENT_MUTATION);
     function handleDeleteContent() {
         if(confirmAction({ what: 'comment' })) {
@@ -45,10 +46,18 @@ export function Content({ data }: { data: Content }) {
         }
     }
     return <div className="flex-1 py-4">
-        <div className="flex items-center space-x-2">
-            <Avatar size="sm" emojiUnicode={data.owner.emojiUnicode} />
-            <p className="font-bold">{data.owner.firstName} {data.owner.lastName}</p>
-            <p className="pl-2 text-sm">posted on {formatDate(new Date(data.createdAt))}</p>
+        <div className="flex justify-between">
+            <div className="flex space-x-2">
+                <Avatar size="sm" emojiUnicode={data.owner.emojiUnicode} />
+                <div className="flex items-end py-1">
+                    <p className="font-bold">{data.owner.firstName} {data.owner.lastName}</p>
+                    <p className="pl-2 text-sm">posted on {formatDate(new Date(data.createdAt))}</p>
+                </div>
+            </div>
+            <div className="flex items-end space-x-2 py-1">
+                <p className="cursor-pointer" onClick={() => openLikeList(data.id)}>{data.likesCount} like(s)</p>
+                <p className="cursor-pointer">{data.commentsCount} comment(s)</p>
+            </div>
         </div>
         <div className="my-2 border border-slate-600 bg-neutral-900 rounded-xl overflow-hidden">
             <div className="flex flex-1 flex-col overflow-hidden">
@@ -68,6 +77,6 @@ export function Content({ data }: { data: Content }) {
                 <div className='tiptap px-4 py-2 bg-neutral-950' dangerouslySetInnerHTML={{__html: data.body}}></div>
             </div>
         </div>
-        <CommentListView comments={data.comments} contentId={data.id} />
+        <CommentList comments={data.comments} contentId={data.id} />
     </div>
 }

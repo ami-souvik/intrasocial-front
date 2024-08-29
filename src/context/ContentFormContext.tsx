@@ -1,16 +1,29 @@
 import { createContext, useContext, useState } from "react";
 import ContentForm from "@/forms/ContentForm";
+import { ContentType } from "@/views/content/Content";
 
-const ContentFormContext = createContext({});
+export type ContentFormType = {
+    isContentFormOpen: boolean,
+    openContentForm: () => void,
+    openContentFormWith: (v: ContentType) => void,
+    closeContentForm: () => void
+}
+
+export const ContentFormContext = createContext<ContentFormType>({
+    isContentFormOpen: false,
+    openContentForm: () => {},
+    openContentFormWith: (v) => {},
+    closeContentForm: () => {}
+});
 
 export default function ContentFormProvider({ children }: { children: any }) {
-    const [data, setData] = useState(null);
+    const [data, setData] = useState<ContentType | null>(null);
     const [isContentFormOpen, setContentForm] = useState(false);
     function openContentForm() {
         setData(null)
         setContentForm(true);
     }
-    function openContentFormWith(v) {
+    function openContentFormWith(v: ContentType) {
         if(v) setData(v)
         setContentForm(true);
     }

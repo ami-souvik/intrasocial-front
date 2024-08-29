@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Controller, type FieldValues, type Control } from "react-hook-form";
 import ReactEmojiPicker from 'emoji-picker-react';
+import { CiUser } from "react-icons/ci";
 
 const options = ['1f47e', '1f4a9', '1f978', '1faf5', '1f6cc']
 
@@ -23,7 +24,7 @@ export default function EmojiPicker({ name, control }: EmojiPickerProps) {
                     className="text-4xl my-2"
                     onClick={() => setShowPicker(true)}
                     type="button">
-                    {String.fromCodePoint(parseInt(value, 16))}
+                    {value ? String.fromCodePoint(parseInt(value, 16)) : <CiUser />}
                 </button>
                 {showPicker && <div className="fixed w-full md:w-auto">
                     <ReactEmojiPicker onEmojiClick={({ unified }) => {
