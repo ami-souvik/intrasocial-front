@@ -3,10 +3,10 @@ import '@/styles/tiptap.scss'
 import AuthProvider from '@/context/AuthContext'
 import Notifications from '@/screens/Notifications'
 import Profile from '@/screens/Profile'
-import { Feed } from '@/screens/feed/Feed'
+import { Feed } from '@/views/feed/Feed'
 import { Body, Left, Mid, Right } from '@/components/Body'
 import AppWrapper from '@/AppWrapper'
-import FeedTop from '@/screens/feed/FeedTop'
+import FeedTop from '@/views/feed/FeedTop'
 
 function App() {
   return (

@@ -3,7 +3,7 @@ import Avatar from "@/components/Avatar"
 import { formatDatetime } from "@/utils/datetime"
 import { confirmAction } from "@/utils/popups"
 
-export type Comment = {
+export type CommentType = {
     id: number,
     owner: {
         emojiUnicode: string,
@@ -26,7 +26,7 @@ const DELETE_COMMENT_MUTATION = gql`
   }
 `
 
-export default function CommentView({ data }: { data: Comment }) {
+export default function Comment({ data }: { data: Comment }) {
     const [deleteComment] = useMutation(DELETE_COMMENT_MUTATION);
     function handleDeleteComment() {
         if(confirmAction({ what: 'comment' })) {

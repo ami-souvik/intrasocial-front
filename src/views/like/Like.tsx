@@ -1,5 +1,11 @@
 import { useState } from "react";
 import { gql, useMutation } from "@apollo/client"
+import { UserType } from "../user/User";
+
+export type LikeType = {
+  id: number,
+  user: UserType
+}
 
 const CREATE_CONTENT_LIKE_MUTATION = gql`
   mutation createLike($id: ID!) {
@@ -26,7 +32,7 @@ const DELETE_LIKE_MUTATION = gql`
   }
 `
 
-export default function Like({ contentId, data }: { contentId: number }) {
+export default function Like({ contentId, data }: { contentId: number, data: LikeType[] }) {
     const [liked, setLiked] = useState(!!data[0]);
     const [createLike] = useMutation(CREATE_CONTENT_LIKE_MUTATION);
     const [deleteLike] = useMutation(DELETE_LIKE_MUTATION);

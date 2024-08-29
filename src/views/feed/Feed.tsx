@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
-import { Content, type Content as ContentType } from "@/views/content/Content";
+import { Content, ContentType } from "@/views/content/Content";
 
 export const CONTENT_RELATED_COMMENT_LEN = 2
 export const CONTENT_RELATED_LIKE_LEN = 10
@@ -25,6 +25,7 @@ const CONTENTS_QUERY = gql`
         email
         emojiUnicode
       }
+      commentsCount
       comments(last: ${CONTENT_RELATED_COMMENT_LEN}) {
         id
         body
@@ -37,6 +38,7 @@ const CONTENTS_QUERY = gql`
           email
         }
       }
+      likesCount
       likes(last: ${CONTENT_RELATED_LIKE_LEN}) {
         user {
           firstName
