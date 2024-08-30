@@ -1,12 +1,9 @@
-import ContentFormProvider from "@/context/ContentFormContext";
-import LikeListProvider from "./context/LikeListContext";
+import ModalProvider from "./context/ModalContext";
 
 export default function AppWrapper({ children }: { children: any }) {
   return (
-    <ContentFormProvider>
-      <LikeListProvider>
-        {children}
-      </LikeListProvider>
-    </ContentFormProvider>
+    <ModalProvider>
+      {children}
+    </ModalProvider>
   )
 }

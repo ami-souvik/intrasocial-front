@@ -5,10 +5,10 @@ import { CommentType } from "@/views/comment/Comment";
 import { UserType } from "@/views/user/User";
 import { formatDate } from "@/utils/datetime";
 import { confirmAction } from "@/utils/popups";
-import { useContentForm } from "@/context/ContentFormContext";
 import Like, { LikeType } from "@/views/like/Like";
-import { useLikeList } from "@/context/LikeListContext";
-import Close from "@/components/Close";
+import { useModal } from "@/context/ModalContext";
+import ContentForm from "@/forms/ContentForm";
+import LikeList from "@/views/like/LikeList";
 
 export type ContentType = {
     id: number,
@@ -33,8 +33,7 @@ const DELETE_CONTENT_MUTATION = gql`
 `
 
 export function Content({ data }: { data: ContentType }) {
-    const { openContentFormWith } = useContentForm()
-    const { openLikeList } = useLikeList()
+    const { open } = useModal()
     const [deleteContent] = useMutation(DELETE_CONTENT_MUTATION);
     function handleDeleteContent() {
         if(confirmAction({ what: 'comment' })) {
@@ -55,8 +54,10 @@ export function Content({ data }: { data: ContentType }) {
                 </div>
             </div>
             <div className="flex items-end space-x-2 py-1">
-                <p className="cursor-pointer" onClick={() => openLikeList(data.id)}>{data.likesCount} like(s)</p>
-                <p className="cursor-pointer">{data.commentsCount} comment(s)</p>
+                <p className="cursor-pointer" onClick={() => {
+                    if(data.likesCount > 0) open(LikeList, { data: data.id })
+                }}>{data.likesCount} like(s)</p>
+                <p>{data.commentsCount} comment(s)</p>
             </div>
         </div>
         <div className="my-2 border border-slate-600 bg-neutral-900 rounded-xl overflow-hidden">
@@ -65,7 +66,10 @@ export function Content({ data }: { data: ContentType }) {
                     <h3 className="text-xl font-bold text-wrap truncate">{data.title}</h3>
                     <div className="flex space-x-2">
                         <Like contentId={data.id} data={data.liked} />
-                        <div className="rounded-lg cursor-pointer" onClick={() => openContentFormWith(data)}>
+                        <div className="rounded-lg cursor-pointer" onClick={() => open(ContentForm, {
+                            modalClassName: 'h-full',
+                            data
+                        })}>
                             <p className="text-xl">📝</p>
                         </div>
                         <div className="rounded-lg cursor-pointer" onClick={handleDeleteContent}>

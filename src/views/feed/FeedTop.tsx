@@ -1,15 +1,24 @@
-import { CiMenuBurger } from "react-icons/ci";
+import { TbUserSquareRounded } from "react-icons/tb";
+import { MdNotificationsNone } from "react-icons/md";
 import { Top } from "@/components/Top";
-import { useContentForm } from "@/context/ContentFormContext";
+import { useModal } from "@/context/ModalContext";
+import ContentForm from "@/forms/ContentForm";
+import Profile from "@/views/profile/Profile";
 
 export default function FeedTop() {
-    const { openContentForm } = useContentForm()
+    const { open } = useModal()
     return <Top>
-        <div className="flex justify-between items-center">
-            <button className="px-4">
-                <CiMenuBurger size={28} />
+        <div className="flex justify-end items-center">
+            <button className="bg-teal-700 mx-2" onClick={() => open(ContentForm, {
+                modalClassName: 'h-full',
+                data: null
+            })}>📝 Write</button>
+            <button className="px-2" onClick={() => open(Profile, null)}>
+                <TbUserSquareRounded size={28} />
             </button>
-            <button className="bg-teal-700 rounded-2xl" onClick={openContentForm}>📝 Write</button>
+            <button className="px-2" onClick={() => open(Profile, null)}>
+                <MdNotificationsNone size={28} />
+            </button>
         </div>
     </Top>
 }

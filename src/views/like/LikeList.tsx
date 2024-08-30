@@ -20,7 +20,7 @@ const LIKES_QUERY = gql`
   }
 `
 
-export default function LikeList({ id , closeLikeList }: { id: number, closeLikeList: () => void }) {
+export default function LikeList({ data: id, close }: { data: number, close: () => void }) {
     const [eol, setEol] = useState(false);
     const [data, setData] = useState({
       likes: [],
@@ -50,14 +50,7 @@ export default function LikeList({ id , closeLikeList }: { id: number, closeLike
     useEffect(() => {
         fetchLikes()
     }, [])
-    return <div className="fixed top-0 left-0 w-screen h-screen overflow-y-auto bg-neutral-950/50 z-50 flex justify-center items-center">
-      <div className="rounded-lg border border-slate-600 bg-neutral-950 w-full max-w-[548px]">
-        <div className="flex justify-end m-2">
-          <Close onClick={closeLikeList} />
-        </div>
-        <div className="my-2">
-          {data.likes?.map((c: LikeType) => <User key={c.id} data={c.user}/>)}
-        </div>
-      </div>
+    return <div className="my-2">
+      {data.likes?.map((c: LikeType) => <User key={c.id} data={c.user}/>)}
     </div>
 }

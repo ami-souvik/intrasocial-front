@@ -50,7 +50,7 @@ export default function ProfileForm({ initialValues, onSubmitSuccess }: { initia
             <input className="p-2 text-xl border-b border-slate-600 bg-neutral-900" placeholder="Last Name" {...register("lastName")} />
             <input className="p-2 text-xl border-b border-slate-600 bg-neutral-900" placeholder="Email" {...register("email")} />
             <div className="flex justify-end">
-                <button className="bg-teal-700 rounded-2xl" type="submit">Update</button>
+                <button className="bg-teal-700" type="submit">Update</button>
             </div>
         </form>
     )

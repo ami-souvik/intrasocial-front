@@ -41,7 +41,9 @@ const UPDATE_CONTENT_MUTATION = gql`
   }
 `
 
-export default function ContentForm({ data=null, closeContentForm }: { closeContentForm: () => void }) {
+export default function ContentForm({ data=null, close }: { close: () => void }) {
+  console.log(close);
+  
     const {
       control,
       register,
@@ -56,25 +58,18 @@ export default function ContentForm({ data=null, closeContentForm }: { closeCont
         if(data["id"]) updateContent({ variables: { ...data } });
         else createContent({ variables: { ...data } });
         reset();
-        closeContentForm();
+        close();
     }
-    return <div className="fixed top-0 left-0 w-screen h-screen overflow-y-auto bg-neutral-950 z-50">
-        <Top>
-          <div className="flex w-full justify-end space-x-4">
-            <button className="bg-teal-700 rounded-2xl" onClick={handleSubmit(onSubmit)}>Post</button>
-            <Close onClick={closeContentForm} />
-          </div>
-        </Top>
-        <Body>
-          <Left />
-          <Mid>
-            <div className="flex flex-1 flex-col">
-              <input className="p-2 text-5xl border-b border-slate-600 bg-neutral-950"
-              placeholder="Title" {...register("title")} />
-              <Tiptap name="body" control={control} />
-            </div>
-          </Mid>
-          <Right />
-        </Body>
-    </div>
+    return <>
+      <Top>
+        <div className="flex w-full justify-end space-x-4">
+          <button className="bg-teal-700 mx-2" onClick={handleSubmit(onSubmit)}>Post</button>
+        </div>
+      </Top>
+      <div>
+        <input className="p-2 text-5xl border-b border-slate-600 bg-neutral-950"
+        placeholder="Title" {...register("title")} />
+        <Tiptap name="body" control={control} />
+      </div>
+    </>
 }

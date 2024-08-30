@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { gql, useApolloClient } from "@apollo/client";
-import Avatar from "../components/Avatar";
+import User from "@/views/user/User";
 
 const USER_RECORD_LEN = 10
 const USERS_QUERY = gql`
@@ -49,10 +49,7 @@ export default function ProfileSearch() {
       onChange={e => setSearch(e.target.value)}></input>
       <div className="relative">
         <div className="absolute top-2 rounded-lg bg-black w-full">
-          {data.users.map(u => <div className="flex items-center p-1 space-x-2">
-            <Avatar size="sm" emojiUnicode={u.emojiUnicode} />
-            <p>{u.firstName} {u.lastName}</p>
-          </div>)}
+          {data.users.map(u => <User data={u} />)}
         </div>
       </div>
     </div>
