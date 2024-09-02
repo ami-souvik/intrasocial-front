@@ -1,29 +1,33 @@
 import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
+import { FaCommentAlt } from "react-icons/fa";
 
 type CommentFormInputs = {
     body: string
 }
 
 type CommentFormProps = {
-    contentId: number
-    onSubmitSuccess: () => void
+    id: number
+    what: 'content' | 'comment'
+    onSubmitSuccess?: () => void
 }
 const CREATE_COMMENT_MUTATION = gql`
     mutation createComment(
-      $content: ID!
+      $id: ID!
+      $what: ID!
       $body: String!) {
     createComment(
-      content: $content,
+      id: $id,
+      what: $what,
       body: $body) {
         comment {
           body
         }
       }
-  }
+    }
 `
 
-export default function CommentForm({ contentId, onSubmitSuccess }
+export default function CommentForm({ id, what='content', onSubmitSuccess }
     :CommentFormProps) {
     const {
         register,
@@ -32,15 +36,17 @@ export default function CommentForm({ contentId, onSubmitSuccess }
     } = useForm<CommentFormInputs>();
     const [createComment] = useMutation(CREATE_COMMENT_MUTATION);
     function onSubmit(data: CommentFormInputs) {
-        createComment({ variables: { content: contentId, ...data }})
+        createComment({ variables: { id, what, ...data }})
         reset()
-        onSubmitSuccess()
+        if(onSubmitSuccess) onSubmitSuccess()
     }
     return (
         <div className="flex items-end bg-neutral-900 border border-slate-600 rounded-lg p-2">
             <textarea rows={2} className="flex-1 px-2 py-1 bg-neutral-900 resize-none" placeholder="body" {...register("body")} />
             <div className="flex justify-end">
-                <p className="text-2xl cursor-pointer" onClick={handleSubmit(onSubmit)}>💬</p>
+                <button onClick={handleSubmit(onSubmit)}>
+                    <FaCommentAlt />
+                </button>
             </div>
         </div>
     );

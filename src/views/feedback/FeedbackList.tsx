@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react"
 import { gql, useApolloClient } from "@apollo/client"
-import { LikeType } from "./Like"
+import { FeedbackType } from "./Feedback"
 import User from "../user/User"
-import Close from "@/components/Close";
 
-const LIKE_RECORD_LEN = 10
-const LIKES_QUERY = gql`
-  query getLikes($content: ID!, $offset: Int!){
-    likes(content: $content, last: ${LIKE_RECORD_LEN}, offset: $offset) {
+const FEEDBACK_RECORD_LEN = 10
+const FEEDBACKS_QUERY = gql`
+  query getFeedbacks($content: ID!, $offset: Int!){
+    feedbacks(content: $content, last: ${FEEDBACK_RECORD_LEN}, offset: $offset) {
       id
       user {
         emojiUnicode
@@ -20,37 +19,37 @@ const LIKES_QUERY = gql`
   }
 `
 
-export default function LikeList({ data: id, close }: { data: number, close: () => void }) {
+export default function FeedbackList({ data: id, close }: { data: number, close: () => void }) {
     const [eol, setEol] = useState(false);
     const [data, setData] = useState({
-      likes: [],
+      feedbacks: [],
       offset: 0,
       last: 0,
     });
     const client = useApolloClient();
-    function fetchLikes() {
+    function fetchFeedbacks() {
       client.query({
-        query: LIKES_QUERY,
+        query: FEEDBACKS_QUERY,
         variables: {
           content: id,
           offset: data.offset + data.last
         }
       })
       .then(({ data: resData }) => {
-          if(resData.likes.length < LIKE_RECORD_LEN) {
+          if(resData.feedbacks.length < FEEDBACK_RECORD_LEN) {
             setEol(true)
           }
           setData(prev => ({
-            last: LIKE_RECORD_LEN,
+            last: FEEDBACK_RECORD_LEN,
             offset: prev.offset + resData.last,
-            likes: prev.likes.concat(resData.likes)
+            feedbacks: prev.feedbacks.concat(resData.feedbacks)
           }))
       });
     }
     useEffect(() => {
-        fetchLikes()
+      fetchFeedbacks()
     }, [])
     return <div className="my-2">
-      {data.likes?.map((c: LikeType) => <User key={c.id} data={c.user}/>)}
+      {data.feedbacks?.map((c: FeedbackType) => <User key={c.id} data={c.user}/>)}
     </div>
 }

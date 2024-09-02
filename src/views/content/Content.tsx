@@ -5,10 +5,9 @@ import { CommentType } from "@/views/comment/Comment";
 import { UserType } from "@/views/user/User";
 import { formatDate } from "@/utils/datetime";
 import { confirmAction } from "@/utils/popups";
-import Like, { LikeType } from "@/views/like/Like";
+import Feedback, { FeedbackType } from "@/views/feedback/Feedback";
 import { useModal } from "@/context/ModalContext";
 import ContentForm from "@/forms/ContentForm";
-import LikeList from "@/views/like/LikeList";
 
 export type ContentType = {
     id: number,
@@ -17,11 +16,12 @@ export type ContentType = {
     body: string,
     createdAt: string,
     updatedAt: string,
-    liked: LikeType[],
-    commentsCount: number,
+    feedback: FeedbackType[],
+    commentCount: number,
     comments: CommentType[],
-    likesCount: number,
-    likes: LikeType[]
+    upvoteCount: number,
+    downvoteCount: number,
+    feedbacks: FeedbackType[]
 }
 
 const DELETE_CONTENT_MUTATION = gql`
@@ -53,19 +53,21 @@ export function Content({ data }: { data: ContentType }) {
                     <p className="pl-2 text-sm">posted on {formatDate(new Date(data.createdAt))}</p>
                 </div>
             </div>
-            <div className="flex items-end space-x-2 py-1">
-                <p className="cursor-pointer" onClick={() => {
-                    if(data.likesCount > 0) open(LikeList, { data: data.id })
-                }}>{data.likesCount} like(s)</p>
-                <p>{data.commentsCount} comment(s)</p>
-            </div>
         </div>
         <div className="my-2 border border-slate-600 bg-neutral-900 rounded-xl overflow-hidden">
             <div className="flex flex-1 flex-col overflow-hidden">
                 <div className="px-4 py-2 flex justify-between items-center bg-neutral-900">
                     <h3 className="text-xl font-bold text-wrap truncate">{data.title}</h3>
                     <div className="flex space-x-2">
-                        <Like contentId={data.id} data={data.liked} />
+                        <Feedback
+                            id={data.id}
+                            summary={{
+                                upvoteCount: data.upvoteCount,
+                                downvoteCount: data.downvoteCount,
+                                commentCount: data.commentCount
+                            }}
+                            data={data.feedback[0]}
+                        />
                         <div className="rounded-lg cursor-pointer" onClick={() => open(ContentForm, {
                             modalClassName: 'h-full',
                             data

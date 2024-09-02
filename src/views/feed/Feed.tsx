@@ -2,14 +2,14 @@ import { gql, useQuery } from "@apollo/client";
 import { Content, ContentType } from "@/views/content/Content";
 
 export const CONTENT_RELATED_COMMENT_LEN = 2
-export const CONTENT_RELATED_LIKE_LEN = 10
+export const CONTENT_RELATED_FEEDBACK_LEN = 10
 const CONTENTS_QUERY = gql`
   {
     contents {
       id
       title
       body
-      liked {
+      feedback {
         id
         user {
           firstName
@@ -25,7 +25,7 @@ const CONTENTS_QUERY = gql`
         email
         emojiUnicode
       }
-      commentsCount
+      commentCount
       comments(last: ${CONTENT_RELATED_COMMENT_LEN}) {
         id
         body
@@ -37,9 +37,22 @@ const CONTENTS_QUERY = gql`
           lastName
           email
         }
+        comments {
+          id
+          body
+          createdAt
+          owner {
+            emojiUnicode
+            username
+            firstName
+            lastName
+            email
+          }
+        }
       }
-      likesCount
-      likes(last: ${CONTENT_RELATED_LIKE_LEN}) {
+      upvoteCount
+      downvoteCount
+      feedbacks(last: ${CONTENT_RELATED_FEEDBACK_LEN}) {
         user {
           firstName
           lastName

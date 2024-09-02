@@ -2,6 +2,11 @@ import { gql, useMutation } from "@apollo/client"
 import Avatar from "@/components/Avatar"
 import { formatDatetime } from "@/utils/datetime"
 import { confirmAction } from "@/utils/popups"
+import { GoComment } from "react-icons/go";
+import { CiCircleRemove } from "react-icons/ci";
+import CommentForm from "@/forms/CommentForm";
+import CommentList from "./CommentList";
+
 
 export type CommentType = {
     id: number,
@@ -15,7 +20,8 @@ export type CommentType = {
     content: number,
     body: string,
     createdAt: string,
-    updatedAt: string
+    updatedAt: string,
+    comments: CommentType[]
 }
 
 const DELETE_COMMENT_MUTATION = gql`
@@ -26,7 +32,7 @@ const DELETE_COMMENT_MUTATION = gql`
   }
 `
 
-export default function Comment({ data }: { data: Comment }) {
+export default function Comment({ data }: { data: CommentType }) {
     const [deleteComment] = useMutation(DELETE_COMMENT_MUTATION);
     function handleDeleteComment() {
         if(confirmAction({ what: 'comment' })) {
@@ -46,10 +52,20 @@ export default function Comment({ data }: { data: Comment }) {
                     <p className="text-sm">{formatDatetime(new Date(data.createdAt))}</p>
                 </div>
             </div>
-            <p className="text-lg cursor-pointer" onClick={handleDeleteComment}>🗑️</p>
+            <div className="flex">
+                <button><GoComment /></button>
+                <button onClick={handleDeleteComment}><CiCircleRemove size={20} /></button>
+            </div>
         </div>
         <div className="my-2">
             <p>{data.body}</p>
+        </div>
+        <div className="flex my-4">
+            <div className="w-6" />
+            <div className="w-full">
+                <CommentForm id={data.id} what='comment' />
+                {data.comments && <CommentList comments={data.comments} contentId={data.id} />}
+            </div>
         </div>
     </div>
 }
