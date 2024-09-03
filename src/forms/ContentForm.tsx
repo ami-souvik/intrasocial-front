@@ -1,14 +1,11 @@
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
 import Tiptap from "./Tiptap";
-import { Top } from "@/components/Top";
-import Close from "@/components/Close";
-import { Body, Left, Mid, Right } from "@/components/Body";
 
 
 type ContentFormInputs = {
-    title: string
-    body: string
+  title: string
+  body: string
 }
 const CREATE_CONTENT_MUTATION = gql`
     mutation createContent(
@@ -41,19 +38,21 @@ const UPDATE_CONTENT_MUTATION = gql`
   }
 `
 
-export default function ContentForm({ data=null, close }: { close: () => void }) {
+export default function ContentForm({ id, title, body, close }: { close: () => void }) {
   const {
     control,
     register,
     handleSubmit,
     reset
   } = useForm<ContentFormInputs>({
-    defaultValues: data
+    defaultValues: {
+      title, body
+    }
   });
   const [createContent] = useMutation(CREATE_CONTENT_MUTATION);
   const [updateContent] = useMutation(UPDATE_CONTENT_MUTATION);
   function onSubmit(data: ContentFormInputs) {
-      if(data["id"]) updateContent({ variables: { ...data } });
+      if(id) updateContent({ variables: { ...data } });
       else createContent({ variables: { ...data } });
       reset();
       close();

@@ -76,8 +76,6 @@ export default function Feedback({ id, what='content', summary, data }: Feedback
             <p>{summary.upvoteCount - summary.downvoteCount}</p>
             <button onClick={() => toggleFeedback("d")}><BsArrowDownSquare size={16} /></button>
           </div>
-          <button><GoComment /></button>
-          <p>{summary.commentCount}</p>
         </div>
     </div>
 }

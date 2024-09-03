@@ -8,13 +8,13 @@ type CommentFormInputs = {
 
 type CommentFormProps = {
     id: number
-    what: 'content' | 'comment'
+    what?: 'content' | 'comment'
     onSubmitSuccess?: () => void
 }
 const CREATE_COMMENT_MUTATION = gql`
     mutation createComment(
       $id: ID!
-      $what: ID!
+      $what: String!
       $body: String!) {
     createComment(
       id: $id,

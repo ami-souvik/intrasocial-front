@@ -37,6 +37,15 @@ const CONTENTS_QUERY = gql`
           lastName
           email
         }
+        upvoteCount
+        downvoteCount
+        feedbacks {
+          user {
+            firstName
+            lastName
+            emojiUnicode
+          }
+        }
         comments {
           id
           body
@@ -47,6 +56,36 @@ const CONTENTS_QUERY = gql`
             firstName
             lastName
             email
+          }
+          upvoteCount
+          downvoteCount
+          feedbacks {
+            user {
+              firstName
+              lastName
+              emojiUnicode
+            }
+          }
+          comments {
+            id
+            body
+            createdAt
+            owner {
+              emojiUnicode
+              username
+              firstName
+              lastName
+              email
+            }
+            upvoteCount
+            downvoteCount
+            feedbacks {
+              user {
+                firstName
+                lastName
+                emojiUnicode
+              }
+            }
           }
         }
       }

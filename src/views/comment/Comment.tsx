@@ -1,11 +1,13 @@
 import { gql, useMutation } from "@apollo/client"
+import { useModal } from "@/context/ModalContext";
 import Avatar from "@/components/Avatar"
 import { formatDatetime } from "@/utils/datetime"
 import { confirmAction } from "@/utils/popups"
 import { GoComment } from "react-icons/go";
 import { CiCircleRemove } from "react-icons/ci";
-import CommentForm from "@/forms/CommentForm";
 import CommentList from "./CommentList";
+import CommentForm from "@/forms/CommentForm";
+import Feedback from "../feedback/Feedback";
 
 
 export type CommentType = {
@@ -33,6 +35,7 @@ const DELETE_COMMENT_MUTATION = gql`
 `
 
 export default function Comment({ data }: { data: CommentType }) {
+    const { open } = useModal()
     const [deleteComment] = useMutation(DELETE_COMMENT_MUTATION);
     function handleDeleteComment() {
         if(confirmAction({ what: 'comment' })) {
@@ -52,9 +55,26 @@ export default function Comment({ data }: { data: CommentType }) {
                     <p className="text-sm">{formatDatetime(new Date(data.createdAt))}</p>
                 </div>
             </div>
-            <div className="flex">
-                <button><GoComment /></button>
-                <button onClick={handleDeleteComment}><CiCircleRemove size={20} /></button>
+            <div className="flex items-center space-x-2">
+                <Feedback
+                    id={data.id}
+                    summary={{
+                        upvoteCount: data.upvoteCount,
+                        downvoteCount: data.downvoteCount,
+                        commentCount: data.commentCount
+                    }}
+                    data={data.feedback}
+                />
+                <button onClick={() => open(CommentForm, {
+                    data: {
+                        id: data.id,
+                        what: 'comment'
+                    }
+                })}><GoComment /></button>
+                <p>{data.commentCount}</p>
+                <div className="rounded-lg cursor-pointer" onClick={handleDeleteComment}>
+                    <CiCircleRemove size={20} />
+                </div>
             </div>
         </div>
         <div className="my-2">
@@ -63,8 +83,7 @@ export default function Comment({ data }: { data: CommentType }) {
         <div className="flex my-4">
             <div className="w-6" />
             <div className="w-full">
-                <CommentForm id={data.id} what='comment' />
-                {data.comments && <CommentList comments={data.comments} contentId={data.id} />}
+                {data.comments && <CommentList comments={data.comments} id={data.id} what='comment' />}
             </div>
         </div>
     </div>

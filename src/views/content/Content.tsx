@@ -1,5 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
 import Avatar from "@/components/Avatar";
+import { CiEdit } from "react-icons/ci";
+import { CiCircleRemove } from "react-icons/ci";
 import CommentList from "@/views/comment/CommentList";
 import { CommentType } from "@/views/comment/Comment";
 import { UserType } from "@/views/user/User";
@@ -58,7 +60,7 @@ export function Content({ data }: { data: ContentType }) {
             <div className="flex flex-1 flex-col overflow-hidden">
                 <div className="px-4 py-2 flex justify-between items-center bg-neutral-900">
                     <h3 className="text-xl font-bold text-wrap truncate">{data.title}</h3>
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-2 items-center">
                         <Feedback
                             id={data.id}
                             summary={{
@@ -68,14 +70,12 @@ export function Content({ data }: { data: ContentType }) {
                             }}
                             data={data.feedback[0]}
                         />
-                        <div className="rounded-lg cursor-pointer" onClick={() => open(ContentForm, {
+                        <button onClick={() => open(ContentForm, {
                             modalClassName: 'h-full',
                             data
-                        })}>
-                            <p className="text-xl">📝</p>
-                        </div>
+                        })}><CiEdit size={22} /></button>
                         <div className="rounded-lg cursor-pointer" onClick={handleDeleteContent}>
-                            <p className="text-xl">❌</p>
+                            <CiCircleRemove size={20} />
                         </div>
                     </div>
                 </div>
@@ -83,6 +83,6 @@ export function Content({ data }: { data: ContentType }) {
                 <div className='tiptap px-4 py-2 bg-neutral-950' dangerouslySetInnerHTML={{__html: data.body}}></div>
             </div>
         </div>
-        <CommentList comments={data.comments} contentId={data.id} />
+        <CommentList comments={data.comments} id={data.id} what="comment" />
     </div>
 }
