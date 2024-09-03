@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { gql, useMutation } from "@apollo/client"
-import { BsArrowUpSquare } from "react-icons/bs";
-import { BsArrowDownSquare } from "react-icons/bs";
-import { GoComment } from "react-icons/go";
+import { IoChevronUpCircleOutline, IoChevronDownCircleOutline } from "react-icons/io5";
 import { UserType } from "../user/User";
 
 export type FeedbackType = {
@@ -72,9 +70,9 @@ export default function Feedback({ id, what='content', summary, data }: Feedback
     return <div className="rounded-lg cursor-pointer">
         <div className="h-full flex flex-1 items-center">
           <div className="flex items-center rounded-2xl bg-gray-700 p-0.5">
-            <button onClick={() => toggleFeedback("u")}><BsArrowUpSquare size={16} /></button>
+            <button onClick={() => toggleFeedback("u")}><IoChevronUpCircleOutline size={20} /></button>
             <p>{summary.upvoteCount - summary.downvoteCount}</p>
-            <button onClick={() => toggleFeedback("d")}><BsArrowDownSquare size={16} /></button>
+            <button onClick={() => toggleFeedback("d")}><IoChevronDownCircleOutline size={20} /></button>
           </div>
         </div>
     </div>
