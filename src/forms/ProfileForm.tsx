@@ -38,7 +38,6 @@ export default function ProfileForm({ initialValues, onSubmitSuccess }: { initia
         defaultValues: initialValues
     });
     const [updateCurrent, { data: currentData, loading, error }] = useMutation(UPDATE_USER_MUTATION);
-    console.log({ currentData, loading, error });
     function onSubmit(data: ProfileFormInputs) {
         updateCurrent({ variables: { ...data } })
         onSubmitSuccess(currentData)

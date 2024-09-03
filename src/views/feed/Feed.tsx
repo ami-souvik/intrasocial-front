@@ -1,5 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import { Content, ContentType } from "@/views/content/Content";
+import SocketProvider from "@/context/SocketContext";
 
 export const CONTENT_RELATED_COMMENT_LEN = 2
 export const CONTENT_RELATED_FEEDBACK_LEN = 10
@@ -11,6 +12,7 @@ const CONTENTS_QUERY = gql`
       body
       feedback {
         id
+        vote
         user {
           firstName
           lastName
@@ -39,7 +41,18 @@ const CONTENTS_QUERY = gql`
         }
         upvoteCount
         downvoteCount
+        feedback {
+          id
+          vote
+          user {
+            firstName
+            lastName
+            emojiUnicode
+          }
+        }
         feedbacks {
+          id
+          vote
           user {
             firstName
             lastName
@@ -59,7 +72,18 @@ const CONTENTS_QUERY = gql`
           }
           upvoteCount
           downvoteCount
+          feedback {
+            id
+            vote
+            user {
+              firstName
+              lastName
+              emojiUnicode
+            }
+          }
           feedbacks {
+            id
+            vote
             user {
               firstName
               lastName
@@ -79,7 +103,18 @@ const CONTENTS_QUERY = gql`
             }
             upvoteCount
             downvoteCount
+            feedback {
+              id
+              vote
+              user {
+                firstName
+                lastName
+                emojiUnicode
+              }
+            }
             feedbacks {
+              id
+              vote
               user {
                 firstName
                 lastName
@@ -109,6 +144,8 @@ export function Feed() {
   if (error) return <pre>{error.message}</pre>
   return <div className="px-4 h-screen">
     {data.contents.map((each: ContentType, idx: number) =>
-      <Content key={idx} data={each} />)}
+      <SocketProvider>
+        <Content key={idx} data={each} />
+      </SocketProvider>)}
   </div>
 }

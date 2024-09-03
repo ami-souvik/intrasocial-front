@@ -11,7 +11,7 @@ const COMMENTS_QUERY = gql`
     comments(id: $id, what: $what, last: ${COMMENT_RECORD_LEN}, offset: $offset) {
       id
       body
-      has_reply
+      hasReply
       createdAt
       owner {
         emojiUnicode
@@ -19,6 +19,26 @@ const COMMENTS_QUERY = gql`
         firstName
         lastName
         email
+      }
+      upvoteCount
+      downvoteCount
+      feedback {
+        id
+        vote
+        user {
+          firstName
+          lastName
+          emojiUnicode
+        }
+      }
+      feedbacks {
+        id
+        vote
+        user {
+          firstName
+          lastName
+          emojiUnicode
+        }
       }
     }
   }
@@ -53,7 +73,6 @@ export default function CommentList({ comments=[], id, what='content' }:
           }))
       });
     }
-    function onSubmitSuccess() {}
     return <div>
         {data.comments.map((c: CommentType, idx: number) =><Comment key={idx} data={c} />)}
         {!eoc && <a className="cursor-pointer text-slate-500" onClick={fetchComments}>Show More...</a>}

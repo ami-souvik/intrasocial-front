@@ -18,7 +18,7 @@ export type ContentType = {
     body: string,
     createdAt: string,
     updatedAt: string,
-    feedback: FeedbackType[],
+    feedback: FeedbackType,
     commentCount: number,
     comments: CommentType[],
     upvoteCount: number,
@@ -68,7 +68,7 @@ export function Content({ data }: { data: ContentType }) {
                                 downvoteCount: data.downvoteCount,
                                 commentCount: data.commentCount
                             }}
-                            data={data.feedback[0]}
+                            data={data.feedback}
                         />
                         <button onClick={() => open(ContentForm, {
                             modalClassName: 'h-full',
