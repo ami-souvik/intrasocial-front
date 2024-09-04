@@ -59,7 +59,6 @@ export default function Feedback({ id, what='content', summary, data }: Feedback
   const [feedback, setFeedback] = useState<FeedbackType | null>(data);
   const [createFeedback] = useMutation(CREATE_CONTENT_FEEDBACK_MUTATION);
   const [deleteFeedback] = useMutation(DELETE_FEEDBACK_MUTATION);
-  console.log(summary);
   function toggleFeedback(vote: VoteType) {
     if(feedback?.vote != vote) createFeedback({ variables: { id, what, vote }}).then(res => {
       setFeedback(res.data?.createFeedback?.feedback)

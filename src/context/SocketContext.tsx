@@ -18,7 +18,9 @@ export default function SocketProvider({ id: roomid, children }: { id: number, c
     const [isReady, setIsReady] = useState(false)
     const [event, setEvent] = useState(null)
     const ws = useRef<WebSocket>(null)
-    console.log(isReady);
+    if(isReady) {
+        console.log(`Socket connection established successfully on channel: ${roomid}`);
+    }
     useEffect(() => {
         const socket = new WebSocket(`ws://localhost:8000/ws/chat/${roomid}/`)
 

@@ -52,7 +52,7 @@ export default function ContentForm({ id, title, body, close }: { close: () => v
   const [createContent] = useMutation(CREATE_CONTENT_MUTATION);
   const [updateContent] = useMutation(UPDATE_CONTENT_MUTATION);
   function onSubmit(data: ContentFormInputs) {
-      if(id) updateContent({ variables: { ...data } });
+      if(id) updateContent({ variables: { id, ...data } });
       else createContent({ variables: { ...data } });
       reset();
       close();
