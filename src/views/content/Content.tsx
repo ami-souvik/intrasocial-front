@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import Avatar from "@/components/Avatar";
 import { CiEdit } from "react-icons/ci";
 import { CiCircleRemove } from "react-icons/ci";
@@ -9,7 +9,9 @@ import { formatDate } from "@/utils/datetime";
 import { confirmAction } from "@/utils/popups";
 import Feedback, { FeedbackType } from "@/views/feedback/Feedback";
 import { useModal } from "@/context/ModalContext";
+import { useSocket } from "@/context/SocketContext";
 import ContentForm from "@/forms/ContentForm";
+import { useEffect } from "react";
 
 export type ContentType = {
     id: number,
@@ -26,6 +28,141 @@ export type ContentType = {
     feedbacks: FeedbackType[]
 }
 
+export const CONTENT_RELATED_COMMENT_LEN = 2
+export const CONTENT_RELATED_FEEDBACK_LEN = 10
+const CONTENT_QUERY = gql`
+  query getContent($contentId: ID!){
+    contents(contentId: $contentId) {
+      id
+      title
+      body
+      feedback {
+        id
+        vote
+        user {
+          firstName
+          lastName
+          emojiUnicode
+        }
+      }
+      owner {
+        id
+        username
+        firstName
+        lastName
+        email
+        emojiUnicode
+      }
+      commentCount
+      comments(last: ${CONTENT_RELATED_COMMENT_LEN}) {
+        id
+        body
+        createdAt
+        owner {
+          emojiUnicode
+          username
+          firstName
+          lastName
+          email
+        }
+        upvoteCount
+        downvoteCount
+        feedback {
+          id
+          vote
+          user {
+            firstName
+            lastName
+            emojiUnicode
+          }
+        }
+        feedbacks {
+          id
+          vote
+          user {
+            firstName
+            lastName
+            emojiUnicode
+          }
+        }
+        comments {
+          id
+          body
+          createdAt
+          owner {
+            emojiUnicode
+            username
+            firstName
+            lastName
+            email
+          }
+          upvoteCount
+          downvoteCount
+          feedback {
+            id
+            vote
+            user {
+              firstName
+              lastName
+              emojiUnicode
+            }
+          }
+          feedbacks {
+            id
+            vote
+            user {
+              firstName
+              lastName
+              emojiUnicode
+            }
+          }
+          comments {
+            id
+            body
+            createdAt
+            owner {
+              emojiUnicode
+              username
+              firstName
+              lastName
+              email
+            }
+            upvoteCount
+            downvoteCount
+            feedback {
+              id
+              vote
+              user {
+                firstName
+                lastName
+                emojiUnicode
+              }
+            }
+            feedbacks {
+              id
+              vote
+              user {
+                firstName
+                lastName
+                emojiUnicode
+              }
+            }
+          }
+        }
+      }
+      upvoteCount
+      downvoteCount
+      feedbacks(last: ${CONTENT_RELATED_FEEDBACK_LEN}) {
+        user {
+          firstName
+          lastName
+          emojiUnicode
+        }
+      }
+      createdAt
+    }
+  }
+`
 const DELETE_CONTENT_MUTATION = gql`
   mutation deleteContent($id: ID!) {
     deleteContent(id: $id) {
@@ -34,9 +171,17 @@ const DELETE_CONTENT_MUTATION = gql`
   }
 `
 
-export function Content({ data }: { data: ContentType }) {
+export function Content({ id }: { id: number }) {
     const { open } = useModal()
+    const { event } = useSocket();
+    const { data: contentData, loading, error, refetch } = useQuery(CONTENT_QUERY, { variables: {contentId: id} });
+    useEffect(() => {
+        refetch()
+    }, [event])
     const [deleteContent] = useMutation(DELETE_CONTENT_MUTATION);
+    if (loading) return "Loading...";
+    if (error) return <pre>{error.message}</pre>
+    const data = contentData.contents[0]
     function handleDeleteContent() {
         if(confirmAction({ what: 'comment' })) {
             deleteContent({

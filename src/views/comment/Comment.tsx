@@ -26,15 +26,6 @@ export type CommentType = {
 }
 
 export default function Comment({ data }: { data: CommentType }) {
-    const socket = new WebSocket('ws://121.0.0.1:8000/ws/chat/feedback');
-    socket.onmessage = function(e) {
-        console.log(e.data);
-    };
-    socket.onclose = function(e) {
-        console.error('Chat socket closed unexpectedly');
-    };
-
-
     return <div>
         <div className="flex justify-between items-center">
             <div className="flex space-x-2 items-center">
