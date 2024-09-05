@@ -2,8 +2,6 @@ import { UserType } from "../user/User"
 import Feedback, { FeedbackType } from "../feedback/Feedback"
 import { CommentType } from "../comment/Comment"
 import Avatar from "@/components/Avatar"
-import ContentForm from "@/forms/ContentForm"
-import { CiEdit } from "react-icons/ci"
 import CommentList from "../comment/CommentList"
 import { formatDate } from "@/utils/datetime"
 
@@ -51,10 +49,6 @@ export default function ContentCard({ data }: { data: ContentType}) {
                             }}
                             data={data.feedback}
                         />
-                        <button onClick={() => open(ContentForm, {
-                            modalClassName: 'h-full',
-                            data
-                        })}><CiEdit size={22} /></button>
                     </div>
                 </div>
                 <div className="border-b border-slate-600"></div>

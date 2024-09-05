@@ -215,7 +215,7 @@ export default ({ name, control }) => {
       render={({ field: { onChange, onBlur, value } }) => {
         return (
           <EditorProvider
-            slotBefore={<MenuBar />}
+            // slotBefore={<MenuBar />}
             extensions={extensions}
             content={value}
             onUpdate={({ editor }) => {

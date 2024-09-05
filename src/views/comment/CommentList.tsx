@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { gql, useApolloClient } from "@apollo/client"
+import { IoIosAddCircleOutline } from "react-icons/io";
 import { CONTENT_RELATED_COMMENT_LEN } from "@/views/feed/Feed"
 import Comment, { type CommentType } from "./Comment"
 
@@ -11,7 +12,6 @@ const COMMENTS_QUERY = gql`
     comments(id: $id, what: $what, last: ${COMMENT_RECORD_LEN}, offset: $offset) {
       id
       body
-      hasReply
       createdAt
       owner {
         emojiUnicode
@@ -44,9 +44,8 @@ const COMMENTS_QUERY = gql`
   }
 `
 
-export default function CommentList({ comments=[], id, what='content' }:
-    { comments: CommentType[], id: number, what?: 'content' | 'comment' }) {
-    const [eoc, setEoc] = useState(comments.length < CONTENT_RELATED_COMMENT_LEN);
+export default function CommentList({ id, count, comments=[], what='content' }:
+    { id: number, count: number, comments: CommentType[], what?: 'content' | 'comment' }) {
     const [data, setData] = useState({
       last: comments.length,
       offset: 0,
@@ -63,9 +62,6 @@ export default function CommentList({ comments=[], id, what='content' }:
         }
       })
       .then(({ data: resData }) => {
-          if(resData.comments.length < COMMENT_RECORD_LEN) {
-            setEoc(true)
-          }
           setData(prev => ({
             last: COMMENT_RECORD_LEN,
             offset: prev.offset + resData.last,
@@ -75,6 +71,9 @@ export default function CommentList({ comments=[], id, what='content' }:
     }
     return <div>
         {data.comments.map((c: CommentType, idx: number) =><Comment key={idx} data={c} />)}
-        {!eoc && <a className="cursor-pointer text-slate-500" onClick={fetchComments}>Show More...</a>}
+        {data.last < count && <a className="flex items-center cursor-pointer text-slate-500 space-x-2 mx-2" onClick={fetchComments}>
+          <IoIosAddCircleOutline size={22} />
+          <p>Show More...</p>
+        </a>}
     </div>
 }

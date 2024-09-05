@@ -36,11 +36,11 @@ export default function Actions({ data }) {
         />
         <button onClick={() => open(CommentForm, {
             data: {
-                id: data.id,
+                data,
                 what: 'comment'
             }
         })}><GoComment /></button>
-        <p>{data.commentCount}</p>
+        <p>{data.commentCount || 0}</p>
         <div className="rounded-lg cursor-pointer" onClick={handleDeleteComment}>
             <CiCircleRemove size={20} />
         </div>

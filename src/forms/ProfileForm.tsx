@@ -45,9 +45,9 @@ export default function ProfileForm({ initialValues, onSubmitSuccess }: { initia
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center bg-neutral-900 border border-slate-600 rounded-xl p-4 space-y-2">
             <EmojiPicker name="emojiUnicode" control={control} />
-            <input className="p-2 text-xl border-b border-slate-600 bg-neutral-900" placeholder="First Name" {...register("firstName")} />
-            <input className="p-2 text-xl border-b border-slate-600 bg-neutral-900" placeholder="Last Name" {...register("lastName")} />
-            <input className="p-2 text-xl border-b border-slate-600 bg-neutral-900" placeholder="Email" {...register("email")} />
+            <input className="p-2 border-b border-slate-600 bg-neutral-900" placeholder="First Name" {...register("firstName")} />
+            <input className="p-2 border-b border-slate-600 bg-neutral-900" placeholder="Last Name" {...register("lastName")} />
+            <input className="p-2 border-b border-slate-600 bg-neutral-900" placeholder="Email" {...register("email")} />
             <div className="flex justify-end">
                 <button className="bg-teal-700" type="submit">Update</button>
             </div>

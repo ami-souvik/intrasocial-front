@@ -15,7 +15,6 @@ export const ModalContext = createContext<ModalType>({
 
 type StateType = {
     component: React.Component,
-    modalClassName: string,
     data: any,
 }
 
@@ -34,7 +33,6 @@ export default function ModalProvider({ children }: { children: any }) {
         <ModalContext.Provider value={{ isOpen, open, close }}>
             {isOpen && state && <Modalize
                 component={state.component}
-                modalClassName={state.modalClassName}
                 componentProps={{ data: state.data, close }}
             />}
             <div className={`${isOpen ? "overflow-hidden" : ""}`}>

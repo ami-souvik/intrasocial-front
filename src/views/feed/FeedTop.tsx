@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { TbUserSquareRounded } from "react-icons/tb";
 import { MdNotificationsNone } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
 import { Top } from "@/components/Top";
 import { useModal } from "@/context/ModalContext";
 import ContentForm from "@/forms/ContentForm";
 import Profile from "@/views/profile/Profile";
-import { CiEdit } from "react-icons/ci";
+import Notifications from "@/screens/Notifications";
 
 export default function FeedTop() {
     const { open } = useModal()
@@ -15,13 +16,12 @@ export default function FeedTop() {
             <input className="p-2 w-full bg-neutral-950 rounded border border-slate-600" placeholder="Search me" value={search}
             onChange={e => setSearch(e.target.value)}></input>
             <button className="flex bg-teal-700 mx-2 space-x-2" onClick={() => open(ContentForm, {
-                modalClassName: 'h-full',
-                data: null
+                data: {}
             })}><CiEdit size={22} /><p>Write</p></button>
             <button className="px-2" onClick={() => open(Profile, null)}>
                 <TbUserSquareRounded size={28} />
             </button>
-            <button className="px-2" onClick={() => open(Profile, null)}>
+            <button className="px-2" onClick={() => open(Notifications, null)}>
                 <MdNotificationsNone size={28} />
             </button>
         </div>

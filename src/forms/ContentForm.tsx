@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
 import Tiptap from "./Tiptap";
+import Close from "@/components/Close";
 
 
 type ContentFormInputs = {
@@ -38,7 +39,7 @@ const UPDATE_CONTENT_MUTATION = gql`
   }
 `
 
-export default function ContentForm({ id, title, body, close }: { close: () => void }) {
+export default function ContentForm({ data: { id, title, body }, close }: { close: () => void }) {
   const {
     control,
     register,
@@ -57,16 +58,24 @@ export default function ContentForm({ id, title, body, close }: { close: () => v
       reset();
       close();
   }
-  return <>
-    <div className="bg-zinc-900 border-b border-slate-700 py-3">
-      <div className="flex w-full justify-end space-x-4">
-        <button className="bg-teal-700 mx-2" onClick={handleSubmit(onSubmit)}>Post</button>
+  return <div>
+    <div className="flex justify-end w-full max-w-[750px]">
+      <Close onClick={close} />
+    </div>
+    <div className="rounded-lg border border-slate-600 bg-neutral-950 max-w-[750px] overflow-x-hidden">
+      <div className="flex justify-between items-center px-8 bg-zinc-900 border-slate-700 py-3">
+        <p className="text-xl font-bold">Write Post</p>
+        <div className="space-x-4">
+          <button className="bg-teal-700" onClick={handleSubmit(onSubmit)}>Post</button>
+        </div>
+      </div>
+      <div className="px-8 py-4 space-y-4">
+        <input className="w-full p-2 text-5xl border border-slate-600 bg-neutral-950 rounded-xl"
+        placeholder="Title" {...register("title")} />
+        <div className="p-2 border border-slate-600 bg-neutral-950 rounded-xl min-h-32">
+          <Tiptap name="body" control={control} />
+        </div>
       </div>
     </div>
-    <div>
-      <input className="w-full p-2 text-5xl border-b border-slate-600 bg-neutral-950"
-      placeholder="Title" {...register("title")} />
-      <Tiptap name="body" control={control} />
-    </div>
-  </>
+  </div>
 }

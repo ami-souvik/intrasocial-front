@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import ProfileForm from "@/forms/ProfileForm";
 import Avatar from "../../components/Avatar";
 import ProfileSearch from "@/forms/ProfileSearch";
+import Close from "@/components/Close";
 
 const CURRENT_QUERY = gql`
   query {
@@ -17,7 +18,7 @@ const CURRENT_QUERY = gql`
   }
 `
 
-export default function Profile() {
+export default function Profile({ close }) {
     const { handleSignOut } = useAuth();
     const [showEdit, setShowEdit] = useState(false);
     const { data, loading, error,refetch } = useQuery(CURRENT_QUERY);
@@ -27,12 +28,17 @@ export default function Profile() {
     }
     if (loading) return "Loading...";
     if (error) return <pre>{error.message}</pre>
-    return  <>
-        <div className="flex flex-col m-4">
+    return <div className="w-full max-w-[480px]">
+        <div className="flex justify-end">
+            <Close onClick={close} />
+        </div>
+        <div className="flex flex-col p-4 rounded-lg border border-slate-600 bg-neutral-950">
             {data.current && showEdit &&
                 <div className="fixed top-0 left-0 bg-black bg-opacity-50 w-screen h-screen flex justify-center items-center">
                     <div className="flex flex-col items-end">
-                        <button onClick={() => setShowEdit(false)}>close</button>
+                        <div className="flex justify-end">
+                            <Close onClick={() => setShowEdit(false)} />
+                        </div>
                         <ProfileForm initialValues={data.current} onSubmitSuccess={onUpdate}/>
                     </div>
                 </div>
@@ -57,5 +63,5 @@ export default function Profile() {
                 <button className="bg-teal-700" onClick={handleSignOut}>Sign Out</button>
             </div>
         </div>
-    </>
+    </div>
 }
