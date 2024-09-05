@@ -45,7 +45,7 @@ export default function ProfileSearch() {
       return () => clearTimeout(delayDebounceFn)
     }, [search])
     return <div>
-      <input className="p-2 w-full bg-neutral-950 rounded border border-slate-600" placeholder="Search friends" value={search}
+      <input className="p-2 w-full bg-neutral-950 border border-slate-600" placeholder="Search friends" value={search}
       onChange={e => setSearch(e.target.value)}></input>
       <div className="relative">
         <div className="absolute top-2 rounded-lg bg-black w-full">

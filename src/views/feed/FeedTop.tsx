@@ -5,7 +5,6 @@ import { CiEdit } from "react-icons/ci";
 import { Top } from "@/components/Top";
 import { useModal } from "@/context/ModalContext";
 import ContentForm from "@/forms/ContentForm";
-import Profile from "@/views/profile/Profile";
 import Notifications from "@/screens/Notifications";
 
 export default function FeedTop() {
@@ -13,12 +12,12 @@ export default function FeedTop() {
     const [search, setSearch] = useState('');
     return <Top>
         <div className="flex justify-end items-center">
-            <input className="p-2 w-full bg-neutral-950 rounded border border-slate-600" placeholder="Search me" value={search}
+            <input className="p-2 w-full bg-neutral-950 border border-slate-600" placeholder="Search me" value={search}
             onChange={e => setSearch(e.target.value)}></input>
             <button className="flex bg-teal-700 mx-2 space-x-2" onClick={() => open(ContentForm, {
                 data: {}
             })}><CiEdit size={22} /><p>Write</p></button>
-            <button className="px-2" onClick={() => open(Profile, null)}>
+            <button className="px-2" onClick={() => window.open('/profile', '_self')}>
                 <TbUserSquareRounded size={28} />
             </button>
             <button className="px-2" onClick={() => open(Notifications, null)}>

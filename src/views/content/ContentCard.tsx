@@ -4,6 +4,7 @@ import { CommentType } from "../comment/Comment"
 import Avatar from "@/components/Avatar"
 import CommentList from "../comment/CommentList"
 import { formatDate } from "@/utils/datetime"
+import { GoComment } from "react-icons/go"
 
 export type ContentType = {
     id: number,
@@ -49,6 +50,8 @@ export default function ContentCard({ data }: { data: ContentType}) {
                             }}
                             data={data.feedback}
                         />
+                        <GoComment />
+                        <p>{data.commentCount}</p>
                     </div>
                 </div>
                 <div className="border-b border-slate-600"></div>

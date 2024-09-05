@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { CiEdit } from "react-icons/ci";
+import { GoComment } from "react-icons/go";
 import { CiCircleRemove } from "react-icons/ci";
 import Avatar from "@/components/Avatar";
 import CommentList from "@/views/comment/CommentList";
@@ -12,10 +14,6 @@ import Feedback, { FeedbackType } from "@/views/feedback/Feedback";
 import { useModal } from "@/context/ModalContext";
 import SocketProvider, { useSocket } from "@/context/SocketContext";
 import ContentForm from "@/forms/ContentForm";
-import { useEffect } from "react";
-import { Body, Left, Mid, Right } from "@/components/Body";
-import FeedTop from "../feed/FeedTop";
-import { GoComment } from "react-icons/go";
 import CommentForm from "@/forms/CommentForm";
 
 export type ContentType = {
@@ -198,58 +196,50 @@ function Content({ id: contentId }: { id: number }) {
         })
       }
     }
-    return <>
-      <FeedTop />
-      <Body>
-        <Left/>
-        <Mid>
-          <div className="flex-1 py-4">
-            <div className="flex justify-between">
-                <div className="flex space-x-2">
-                    <Avatar size="sm" emojiUnicode={data.owner.emojiUnicode} />
-                    <div className="flex items-end py-1">
-                        <p className="font-bold">{data.owner.firstName} {data.owner.lastName}</p>
-                        <p className="pl-2 text-sm">posted on {formatDate(new Date(data.createdAt))}</p>
-                    </div>
-                </div>
-            </div>
-            <div className="my-2 overflow-hidden">
-                <div className="flex flex-1 flex-col overflow-hidden">
-                    <div className="px-4 py-2 flex justify-between items-center">
-                        <h3 className="text-4xl font-bold text-wrap truncate">{data.title}</h3>
-                        <div className="flex space-x-2 items-center">
-                            <Feedback
-                                id={data.id}
-                                summary={{
-                                    upvoteCount: data.upvoteCount,
-                                    downvoteCount: data.downvoteCount,
-                                    commentCount: data.commentCount
-                                }}
-                                data={data.feedback}
-                            />
-                            <button onClick={() => open(CommentForm, {
-                              data: {
-                                id: data.id,
-                                what: 'content'
-                              }
-                            })}><GoComment /></button>
-                            <button onClick={() => open(ContentForm, {
-                              data
-                            })}><CiEdit size={22} /></button>
-                            <div className="rounded-lg cursor-pointer" onClick={handleDeleteContent}>
-                                <CiCircleRemove size={20} />
-                            </div>
-                        </div>
-                    </div>
-                    <div className='tiptap px-4 py-2 bg-neutral-950' dangerouslySetInnerHTML={{__html: data.body}}></div>
-                </div>
-            </div>
-            <CommentList id={data.id} count={data.commentsCount} comments={data.comments} what="comment" />
+    return <div className="flex-1 py-4">
+      <div className="flex justify-between">
+          <div className="flex space-x-2">
+              <Avatar size="sm" emojiUnicode={data.owner.emojiUnicode} />
+              <div className="flex items-end py-1">
+                  <p className="font-bold">{data.owner.firstName} {data.owner.lastName}</p>
+                  <p className="pl-2 text-sm">posted on {formatDate(new Date(data.createdAt))}</p>
+              </div>
           </div>
-        </Mid>
-        <Right/>
-      </Body>
-    </>
+      </div>
+      <div className="my-2 overflow-hidden">
+          <div className="flex flex-1 flex-col overflow-hidden">
+              <div className="px-4 py-2 flex justify-between items-center">
+                  <h3 className="text-4xl font-bold text-wrap truncate">{data.title}</h3>
+                  <div className="flex space-x-2 items-center">
+                      <Feedback
+                          id={data.id}
+                          summary={{
+                              upvoteCount: data.upvoteCount,
+                              downvoteCount: data.downvoteCount,
+                              commentCount: data.commentCount
+                          }}
+                          data={data.feedback}
+                      />
+                      <button onClick={() => open(CommentForm, {
+                        data: {
+                          id: data.id,
+                          what: 'content'
+                        }
+                      })}><GoComment /></button>
+                      <button onClick={() => open(ContentForm, {
+                        modalClassName: 'h-full',
+                        data
+                      })}><CiEdit size={22} /></button>
+                      <div className="rounded-lg cursor-pointer" onClick={handleDeleteContent}>
+                          <CiCircleRemove size={20} />
+                      </div>
+                  </div>
+              </div>
+              <div className='tiptap px-4 py-2 bg-neutral-950' dangerouslySetInnerHTML={{__html: data.body}}></div>
+          </div>
+      </div>
+      <CommentList comments={data.comments} id={data.id} what="comment" />
+  </div>
 }
 
 export default () => {
