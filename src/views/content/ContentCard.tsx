@@ -2,7 +2,6 @@ import { UserType } from "../user/User"
 import Feedback, { FeedbackType } from "../feedback/Feedback"
 import { CommentType } from "../comment/Comment"
 import Avatar from "@/components/Avatar"
-import CommentList from "../comment/CommentList"
 import { formatDate } from "@/utils/datetime"
 import { GoComment } from "react-icons/go"
 
@@ -58,6 +57,5 @@ export default function ContentCard({ data }: { data: ContentType}) {
                 <div className='tiptap px-4 py-2 bg-neutral-950' dangerouslySetInnerHTML={{__html: data.body}}></div>
             </div>
         </div>
-        <CommentList comments={data.comments} id={data.id} what="comment" />
     </div>
 }

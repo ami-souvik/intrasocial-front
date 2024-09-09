@@ -238,7 +238,7 @@ function Content({ id: contentId }: { id: number }) {
               <div className='tiptap px-4 py-2 bg-neutral-950' dangerouslySetInnerHTML={{__html: data.body}}></div>
           </div>
       </div>
-      <CommentList comments={data.comments} id={data.id} what="comment" />
+      <CommentList id={data.id} count={data.commentCount} comments={data.comments} what="content" />
   </div>
 }
 
