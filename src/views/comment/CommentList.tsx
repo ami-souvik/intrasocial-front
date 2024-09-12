@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { gql, useApolloClient } from "@apollo/client"
 import { IoIosAddCircleOutline } from "react-icons/io";
-import { CONTENT_RELATED_COMMENT_LEN } from "@/views/feed/Feed"
 import Comment, { type CommentType } from "./Comment"
 
 const COMMENT_RECORD_LEN = 10
@@ -70,10 +69,14 @@ export default function CommentList({ id, count, comments=[], what='content' }:
       });
     }
     return <div>
-        {data.comments.map((c: CommentType, idx: number) =><Comment key={idx} data={c} />)}
-        {data.last < count && <a className="flex items-center cursor-pointer text-slate-500 space-x-2 mx-2" onClick={fetchComments}>
-          <IoIosAddCircleOutline size={22} />
-          <p>Show More...</p>
-        </a>}
+      {data.comments.map((c: CommentType, idx: number) =>
+        <div key={idx} className="flex">
+          <div className="border-l border-slate-800 translate-x-[18.9px]" />
+          <Comment data={c} />
+        </div>)}
+      {data.last < count && <a className="flex items-center cursor-pointer text-slate-500 space-x-2 mx-2" onClick={fetchComments}>
+        <IoIosAddCircleOutline size={22} />
+        <p>Show More...</p>
+      </a>}
     </div>
 }

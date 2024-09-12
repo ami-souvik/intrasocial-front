@@ -1,19 +1,25 @@
 import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
-import Close from "@/components/Close";
 import { FaCommentAlt } from "react-icons/fa";
-import { ContentType } from "@/views/content/Content";
-import { CommentType } from "@/views/comment/Comment";
+import Close from "@/components/Close";
 
 type CommentFormInputs = {
     body: string
 }
 
+type UpdateCommentType = {
+    id: number
+    body?: string
+}
+
 type CommentFormProps = {
     data: {
-        data: ContentType | CommentType,
+        id?: number
+        body?: string
+        parentId?: number
+        comment?: UpdateCommentType
         what?: 'content' | 'comment'
-    },
+    }
     close: () => void
     onSubmitSuccess?: () => void
 }
@@ -32,24 +38,44 @@ const CREATE_COMMENT_MUTATION = gql`
       }
     }
 `
+const UPDATE_COMMENT_MUTATION = gql`
+    mutation updateComment(
+      $id: ID!
+      $body: String!) {
+    updateComment(
+      id: $id,
+      body: $body) {
+        comment {
+          body
+        }
+      }
+    }
+`
 
-export default function CommentForm({ data: { data: parentData, what='content' }, close, onSubmitSuccess }
+export default function CommentForm({ data: { id, body="", parentId, what='content' }, close, onSubmitSuccess }
     :CommentFormProps) {
     const {
         register,
         handleSubmit,
         reset,
-    } = useForm<CommentFormInputs>();
+    } = useForm<CommentFormInputs>({
+        defaultValues: {
+            body
+        }
+    });
     const [createComment] = useMutation(CREATE_COMMENT_MUTATION);
+    const [updateComment] = useMutation(UPDATE_COMMENT_MUTATION);
     function onSubmit(data: CommentFormInputs) {
-        createComment({ variables: { id: parentData.id, what, ...data }})
+        if(!id) createComment({ variables: { id: parentId, what, ...data }})
+        else updateComment({ variables: { id, ...data }})
         reset()
         if(onSubmitSuccess) onSubmitSuccess()
+        close()
     }
     return (
         <div className="flex flex-col justify-end h-full w-full max-w-[750px] my-8">
             <div className="flex items-end w-full bg-neutral-900 border border-slate-600 rounded-lg p-2">
-                <textarea rows={2} className="flex-1 px-2 py-1 bg-neutral-900 resize-none" placeholder="body" {...register("body")} />
+                <textarea autoFocus rows={2} className="flex-1 px-2 py-1 bg-neutral-900 resize-none" placeholder="body" {...register("body")} />
                 <div className="flex justify-end">
                     <Close size={24} onClick={close} />
                     <button onClick={handleSubmit(onSubmit)}>

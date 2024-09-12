@@ -1,6 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
 import { GoComment } from "react-icons/go";
-import { CiCircleRemove } from "react-icons/ci";
+import { CiCircleRemove, CiEdit } from "react-icons/ci";
 import { useModal } from "@/context/ModalContext";
 import { confirmAction } from "@/utils/popups";
 import CommentForm from "@/forms/CommentForm";
@@ -15,32 +15,39 @@ const DELETE_COMMENT_MUTATION = gql`
 `
 
 export default function Actions({ data }) {
-    const { upvoteCount, downvoteCount, commentCount } = data
+    const { id, upvoteCount, downvoteCount, commentCount } = data
     const { open } = useModal()
     const [deleteComment] = useMutation(DELETE_COMMENT_MUTATION);
     function handleDeleteComment() {
         if(confirmAction({ what: 'comment' })) {
             deleteComment({
                 variables: {
-                    id: data.id
+                    id
                 }
             })
         }
     }
     return <div className="flex items-center space-x-2">
         <Feedback
-            id={data.id}
+            id={id}
             what='comment'
             summary={{ upvoteCount, downvoteCount, commentCount }}
             data={data.feedback}
         />
         <button onClick={() => open(CommentForm, {
             data: {
-                data,
+                parentId: id,
                 what: 'comment'
             }
         })}><GoComment /></button>
         <p>{data.commentCount || 0}</p>
+        <button onClick={() => open(CommentForm, {
+            data: {
+                id,
+                body: data.body,
+                what: 'comment'
+            }
+        })}><CiEdit size={22} /></button>
         <div className="rounded-lg cursor-pointer" onClick={handleDeleteComment}>
             <CiCircleRemove size={20} />
         </div>

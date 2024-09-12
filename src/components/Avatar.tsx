@@ -13,7 +13,7 @@ export default function Avatar({ size="lg", emojiUnicode }: { size?: "sm" | "md"
             text: "4xl"
         },
     }
-    return emojiUnicode ? <div className="flex">
-        <p className={`px-1.5 py-1 rounded-xl text-center text-${sizemap[size]?.text || '2xl'}`}>{String.fromCodePoint(parseInt(emojiUnicode, 16))}</p>
+    return emojiUnicode ? <div className="flex w-[36px] justify-center bg-gray-900 rounded-lg mx-1">
+        <p className={`py-1 rounded-xl text-center text-${sizemap[size]?.text || '2xl'}`}>{String.fromCodePoint(parseInt(emojiUnicode, 16))}</p>
     </div> : <></>
 }
