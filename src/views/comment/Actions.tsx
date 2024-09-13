@@ -3,7 +3,6 @@ import { GoComment } from "react-icons/go";
 import { CiCircleRemove, CiEdit } from "react-icons/ci";
 import { useModal } from "@/context/ModalContext";
 import { confirmAction } from "@/utils/popups";
-import CommentForm from "@/forms/CommentForm";
 import Feedback from "../feedback/Feedback";
 
 const DELETE_COMMENT_MUTATION = gql`
@@ -14,7 +13,7 @@ const DELETE_COMMENT_MUTATION = gql`
   }
 `
 
-export default function Actions({ data }) {
+export default function Actions({ data, reply, edit }) {
     const { id, upvoteCount, downvoteCount, commentCount } = data
     const { open } = useModal()
     const [deleteComment] = useMutation(DELETE_COMMENT_MUTATION);
@@ -34,20 +33,9 @@ export default function Actions({ data }) {
             summary={{ upvoteCount, downvoteCount, commentCount }}
             data={data.feedback}
         />
-        <button onClick={() => open(CommentForm, {
-            data: {
-                parentId: id,
-                what: 'comment'
-            }
-        })}><GoComment /></button>
+        <button onClick={reply}><GoComment /></button>
         <p>{data.commentCount || 0}</p>
-        <button onClick={() => open(CommentForm, {
-            data: {
-                id,
-                body: data.body,
-                what: 'comment'
-            }
-        })}><CiEdit size={22} /></button>
+        <button onClick={edit}><CiEdit size={22} /></button>
         <div className="rounded-lg cursor-pointer" onClick={handleDeleteComment}>
             <CiCircleRemove size={20} />
         </div>

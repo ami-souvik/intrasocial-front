@@ -61,11 +61,11 @@ export default function CommentList({ id, count, comments=[], what='content' }:
         }
       })
       .then(({ data: resData }) => {
-          setData(prev => ({
-            last: COMMENT_RECORD_LEN,
-            offset: prev.offset + resData.last,
-            comments: prev.comments.concat(resData.comments)
-          }))
+        setData(prev => ({
+          last: COMMENT_RECORD_LEN,
+          offset: prev.offset + resData.last,
+          comments: prev.comments.concat(resData.comments)
+        }))
       });
     }
     return <div>

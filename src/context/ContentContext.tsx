@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { useParams, useSearchParams } from "react-router-dom";
 import { ContentType } from "@/views/content/Content";
@@ -83,16 +83,6 @@ const CONTENT_QUERY = gql`
   }
 `
 
-function hashcomments(comments: CommentType[], map={}): { [key: number]: any } {
-  comments?.forEach(c => {
-    map[c.id] = { ...c, comments: null }
-    if(c.comments) {
-      map = hashcomments(c.comments, map)
-    }
-  })
-  return map
-}
-
 export default function ContentProvider({ children }:
     { children: any }) {
     const { content } = useParams();
@@ -101,9 +91,7 @@ export default function ContentProvider({ children }:
     if (loading) return "Loading...";
     if (error) return <pre>{error.message}</pre>
     const data = raw.contents[0]
-    const hashed = {...data, comments: null}
-    hashed.comments = hashcomments(data.comments)
-    return <ContentContext.Provider value={{ data, hashed, setSearchParams }}>
+    return <ContentContext.Provider value={{ data, setSearchParams }}>
       {children}
     </ContentContext.Provider>
 }

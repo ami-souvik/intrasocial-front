@@ -39,7 +39,8 @@ const UPDATE_CONTENT_MUTATION = gql`
   }
 `
 
-export default function ContentForm({ data: { id, title, body }, close }: { close: () => void }) {
+export default function ContentForm({ id, title, body, close }:
+  { id: number, title: string, body: string, close: () => void }) {
   const {
     control,
     register,

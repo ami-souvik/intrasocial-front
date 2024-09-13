@@ -5,6 +5,8 @@ import CommentList from "./CommentList";
 import { useContent } from "@/context/ContentContext";
 import { FeedbackType } from "../feedback/Feedback";
 import Actions from "./Actions";
+import CommentForm from "@/forms/CommentForm";
+import { useState } from "react";
 
 export type CommentType = {
     id: number,
@@ -27,31 +29,45 @@ export type CommentType = {
 
 export default function Comment({ data }: { data: CommentType }) {
     const { setSearchParams } = useContent();
-    return <div>
+    const [reply, setReply] = useState(false);
+    const [edit, setEdit] = useState(false);
+    return <div className="w-full">
         <div className="flex relative">
             <div className={`w-[12px] absolute top-[30px] left-[18px] border-l border-slate-800
                 ${ data.commentCount > 0 ? "h-[95px] border-b rounded-bl-2xl" : "h-[99px]"}`} />
-            <div>
-                <div className="flex justify-between items-center">
-                    <div className="flex space-x-2 items-center">
-                        <div className="w-10 text-center">
-                            <Avatar size="sm" emojiUnicode={data.owner.emojiUnicode} />
-                        </div>
-                        <div className="flex items-center">
-                            <p className="text-sm">{data.owner.firstName} {data.owner.lastName}</p>
-                            <p className="mx-2">.</p>
-                            <p className="text-sm text-slate-500">{formatDatetime(new Date(data.createdAt))}</p>
-                        </div>
+            <div className="w-full">
+                <div className="flex space-x-2 items-center">
+                    <div className="w-10 text-center">
+                        <Avatar size="sm" emojiUnicode={data.owner.emojiUnicode} />
+                    </div>
+                    <div className="flex items-center">
+                        <p className="text-sm">{data.owner.firstName} {data.owner.lastName}</p>
+                        <p className="mx-2">.</p>
+                        <p className="text-sm text-slate-500">{formatDatetime(new Date(data.createdAt))}</p>
                     </div>
                 </div>
-                <div className="flex">
-                    <div className="w-10" />
-                    <p className="ml-2 text-sm">{data.body}</p>
-                </div>
-                <div className="flex my-1">
-                    <div className="w-8" />
-                    <Actions data={data} />
-                </div>
+                {
+                    edit ? <div className="flex">
+                        {/** reply to this comment */}
+                        <div className="w-10" />
+                        <CommentForm id={data.id} body={data.body} close={() => setEdit(false)} />
+                    </div>
+                    : <div>
+                        <div className="flex">
+                            <div className="w-10" />
+                            <p className="ml-2 text-sm">{data.body}</p>
+                        </div>
+                        <div className="flex my-1">
+                            <div className="w-8" />
+                            <Actions data={data} reply={() => setReply(true)} edit={() => setEdit(true)} />
+                        </div>
+                        {reply && <div className="flex">
+                            <div className="w-10" />
+                            {/** reply to this comment */}
+                            <CommentForm parentId={data.id} close={() => setReply(false)} />
+                        </div>}
+                    </div>
+                }
             </div>
         </div>
         {
@@ -60,7 +76,7 @@ export default function Comment({ data }: { data: CommentType }) {
                 <div className="w-6" />
                 <div className="w-full">
                     <a className="flex items-center cursor-pointer text-slate-500 space-x-2 mx-2"
-                    onClick={() => setSearchParams({ id: data.id })}>
+                    onClick={() => setSearchParams({ id: String(data.id) })}>
                         <IoIosAddCircleOutline size={22} />
                         <p>Show More...</p>
                     </a>
