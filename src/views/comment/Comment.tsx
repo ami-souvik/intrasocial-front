@@ -1,34 +1,14 @@
+import { useState } from "react";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import Avatar from "@/components/Avatar"
 import { formatDatetime } from "@/utils/datetime"
 import CommentList from "./CommentList";
-import { useContent } from "@/context/ContentContext";
-import { FeedbackType } from "../feedback/Feedback";
+import { CommentType } from "@/views/comment";
 import Actions from "./Actions";
 import CommentForm from "@/forms/CommentForm";
-import { useState } from "react";
 
-export type CommentType = {
-    id: number,
-    owner: {
-        emojiUnicode: string,
-        firstName: string,
-        lastName: string,
-    },
-    content: number,
-    body: string,
-    createdAt: string,
-    updatedAt: string,
-    commentCount: number,
-    comments: CommentType[],
-    upvoteCount: number,
-    downvoteCount: number,
-    feedback: FeedbackType,
-    feedbacks: FeedbackType[]
-}
-
-export default function Comment({ data }: { data: CommentType }) {
-    const { setSearchParams } = useContent();
+export default function Comment({ data: comment }: { data: CommentType }) {
+    const [data, setData] = useState(comment);
     const [reply, setReply] = useState(false);
     const [edit, setEdit] = useState(false);
     return <div className="w-full">
@@ -50,12 +30,17 @@ export default function Comment({ data }: { data: CommentType }) {
                     edit ? <div className="flex">
                         {/** reply to this comment */}
                         <div className="w-10" />
-                        <CommentForm id={data.id} body={data.body} close={() => setEdit(false)} />
+                        <CommentForm id={data.id} body={data.body} close={() => setEdit(false)}
+                        onSuccess={({ body }) => {
+                            setData(prev => {
+                                return { ...prev, body }
+                            })
+                        }} />
                     </div>
                     : <div>
                         <div className="flex">
                             <div className="w-10" />
-                            <p className="ml-2 text-sm">{data.body}</p>
+                            <p className=" text-wrap truncate ml-2 text-sm">{data.body}</p>
                         </div>
                         <div className="flex my-1">
                             <div className="w-8" />
@@ -64,7 +49,22 @@ export default function Comment({ data }: { data: CommentType }) {
                         {reply && <div className="flex">
                             <div className="w-10" />
                             {/** reply to this comment */}
-                            <CommentForm parentId={data.id} close={() => setReply(false)} />
+                            <CommentForm parentId={data.id} close={() => setReply(false)}
+                            onSuccess={(data) => {
+                                setData(prev => {
+                                    let cloned = JSON.parse(JSON.stringify(prev))
+                                    cloned.comments.unshift({
+                                        ...data,
+                                        upvoteCount: 0,
+                                        downvoteCount: 0,
+                                        feedbacks: [],
+                                        commentCount: 0,
+                                        comments: []
+                                    })
+                                    return cloned
+                                })
+                            }}
+                            />
                         </div>}
                     </div>
                 }
@@ -76,7 +76,7 @@ export default function Comment({ data }: { data: CommentType }) {
                 <div className="w-6" />
                 <div className="w-full">
                     <a className="flex items-center cursor-pointer text-slate-500 space-x-2 mx-2"
-                    onClick={() => setSearchParams({ id: String(data.id) })}>
+                    onClick={() => window.open(`?id=${data.id}`, '_self')}>
                         <IoIosAddCircleOutline size={22} />
                         <p>Show More...</p>
                     </a>

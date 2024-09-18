@@ -1,8 +1,8 @@
 import { IoChevronUpCircleOutline, IoChevronDownCircleOutline } from "react-icons/io5";
 import { GoComment } from "react-icons/go"
 import { UserType } from "../user/User"
-import Feedback, { FeedbackType } from "../feedback/Feedback"
-import { CommentType } from "../comment/Comment"
+import { FeedbackType } from "../feedback/Feedback"
+import { CommentType } from "@/views/comment"
 import Avatar from "@/components/Avatar"
 import { formatDate } from "@/utils/datetime"
 
@@ -36,10 +36,10 @@ export default function ContentCard({ data }: { data: ContentType}) {
                 </div>
             </div>
         </div>
-        <div className="my-2 border border-slate-600 bg-neutral-900 rounded-xl overflow-hidden">
-            <div className="flex flex-1 flex-col overflow-hidden">
-                <div className="px-4 py-2 flex justify-between items-center bg-neutral-900">
-                    <h3 className="text-xl font-bold text-wrap truncate">{data.title}</h3>
+        <div className="my-2 border border-slate-600 rounded-xl overflow-hidden">
+            <div className="flex flex-1 flex-col py-3 overflow-hidden">
+                <div className="px-4 pb-2 flex justify-between items-center">
+                    <h3 className="text-2xl font-bold text-wrap truncate">{data.title}</h3>
                     <div className="flex space-x-2 items-center">
                         <div className="rounded-lg cursor-pointer">
                             <div className="h-full flex flex-1 items-center">
@@ -58,8 +58,7 @@ export default function ContentCard({ data }: { data: ContentType}) {
                         <p>{data.commentCount}</p>
                     </div>
                 </div>
-                <div className="border-b border-slate-600"></div>
-                <div className='tiptap px-4 py-2 bg-neutral-950' dangerouslySetInnerHTML={{__html: data.body}}></div>
+                <div className='tiptap px-4' dangerouslySetInnerHTML={{__html: data.body}}></div>
             </div>
         </div>
     </div>

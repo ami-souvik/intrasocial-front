@@ -1,7 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
 import { GoComment } from "react-icons/go";
 import { CiCircleRemove, CiEdit } from "react-icons/ci";
-import { useModal } from "@/context/ModalContext";
 import { confirmAction } from "@/utils/popups";
 import Feedback from "../feedback/Feedback";
 
@@ -15,7 +14,6 @@ const DELETE_COMMENT_MUTATION = gql`
 
 export default function Actions({ data, reply, edit }) {
     const { id, upvoteCount, downvoteCount, commentCount } = data
-    const { open } = useModal()
     const [deleteComment] = useMutation(DELETE_COMMENT_MUTATION);
     function handleDeleteComment() {
         if(confirmAction({ what: 'comment' })) {

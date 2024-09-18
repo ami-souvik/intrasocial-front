@@ -2,7 +2,6 @@ import { useState } from "react";
 import { gql, useMutation } from "@apollo/client"
 import { IoChevronUpCircleOutline, IoChevronDownCircleOutline } from "react-icons/io5";
 import { UserType } from "../user/User";
-import { useSocket } from "@/context/SocketContext";
 
 export type FeedbackType = {
   id: number,
@@ -54,27 +53,31 @@ const DELETE_FEEDBACK_MUTATION = gql`
   }
 `
 
-export default function Feedback({ id, what='content', summary, data }: FeedbackFormProps) {
-  const { isReady, send } = useSocket();
+export default function Feedback({ id, what='content', summary: contentSummary, data }: FeedbackFormProps) {
+  const [summary, setSummary] = useState(contentSummary);
   const [feedback, setFeedback] = useState<FeedbackType | null>(data);
   const [createFeedback] = useMutation(CREATE_CONTENT_FEEDBACK_MUTATION);
   const [deleteFeedback] = useMutation(DELETE_FEEDBACK_MUTATION);
   function toggleFeedback(vote: VoteType) {
     if(feedback?.vote != vote) createFeedback({ variables: { id, what, vote }}).then(res => {
       setFeedback(res.data?.createFeedback?.feedback)
-      if(isReady) send(JSON.stringify({
-        id,
-        type: 'feedback',
-        timestamp: Date.now()
-      }));
+      setSummary(prev => {
+        let summary = prev
+        if(feedback?.vote === "U") summary.upvoteCount -= 1
+        else if(feedback?.vote === "D") summary.downvoteCount -= 1
+        if(vote === "U") summary.upvoteCount += 1
+        else summary.downvoteCount += 1
+        return summary
+      })
     })
     else deleteFeedback({ variables: { id: feedback.id }}).then(res => {
       setFeedback(null)
-      if(isReady) send(JSON.stringify({
-        id,
-        type: 'feedback',
-        timestamp: Date.now()
-      }));
+      setSummary(prev => {
+        let summary = prev
+        if(vote === "U") summary.upvoteCount -= 1
+        else summary.downvoteCount -= 1
+        return summary
+      })
     })
   }
   return <div className="rounded-lg cursor-pointer">

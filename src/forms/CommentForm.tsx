@@ -2,6 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { FaCommentAlt } from "react-icons/fa";
 import Close from "@/components/Close";
+import { CommentType } from "@/views/comment";
 
 type CommentFormInputs = {
   body: string
@@ -13,7 +14,7 @@ type CommentFormProps = {
   parentId?: number
   what?: 'content' | 'comment'
   close: () => void
-  onSuccess?: (v: any) => void
+  onSuccess?: (v: CommentType) => void
   onError?: (v: any) => void
 }
 const CREATE_COMMENT_MUTATION = gql`
@@ -28,6 +29,13 @@ const CREATE_COMMENT_MUTATION = gql`
       comment {
         id
         body
+        owner {
+          emojiUnicode
+          firstName
+          lastName
+        }
+        createdAt
+        updatedAt
       }
     }
   }
@@ -62,13 +70,19 @@ export default function CommentForm({ id, body, parentId, what='comment', close,
     const [updateComment] = useMutation(UPDATE_COMMENT_MUTATION);
     function onSubmit(data: CommentFormInputs) {
         if(!id) createComment({ variables: { id: parentId, what, ...data }})
-          .then(res => {
-            if(onSuccess) onSuccess(res)
+          .then((res) => {
+            if(onSuccess) onSuccess(res.data.createComment.comment)
           })
-          .catch(res => {
-            if(onError) onError(res)
+          .catch((res) => {
+            if(onError) onError(res.data.createComment.comment)
           })
         else updateComment({ variables: { id, ...data }})
+          .then(() => {
+            if(onSuccess) onSuccess(data)
+          })
+          .catch(() => {
+            if(onError) onError(data)
+          })
         reset()
         close()
     }

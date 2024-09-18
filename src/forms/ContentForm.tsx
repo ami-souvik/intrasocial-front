@@ -39,8 +39,8 @@ const UPDATE_CONTENT_MUTATION = gql`
   }
 `
 
-export default function ContentForm({ id, title, body, close }:
-  { id: number, title: string, body: string, close: () => void }) {
+export default function ContentForm({ id, title, body, close, onSuccess }:
+  { id: number, title: string, body: string, close: () => void, onSuccess?: (v: ContentFormInputs) => void }) {
   const {
     control,
     register,
@@ -54,28 +54,27 @@ export default function ContentForm({ id, title, body, close }:
   const [createContent] = useMutation(CREATE_CONTENT_MUTATION);
   const [updateContent] = useMutation(UPDATE_CONTENT_MUTATION);
   function onSubmit(data: ContentFormInputs) {
-      if(id) updateContent({ variables: { id, ...data } });
-      else createContent({ variables: { ...data } });
+      if(id) updateContent({ variables: { id, ...data } })
+        .then(() => { if(onSuccess) onSuccess(data) })
+      else createContent({ variables: { ...data } })
+        .then(() => { if(onSuccess) onSuccess(data) })
       reset();
       close();
   }
   return <div>
-    <div className="flex justify-end w-full max-w-[750px]">
-      <Close onClick={close} />
-    </div>
-    <div className="rounded-lg border border-slate-600 bg-neutral-950 max-w-[750px] overflow-x-hidden">
-      <div className="flex justify-between items-center px-8 bg-zinc-900 border-slate-700 py-3">
-        <p className="text-xl font-bold">Write Post</p>
-        <div className="space-x-4">
-          <button className="bg-teal-700" onClick={handleSubmit(onSubmit)}>Post</button>
-        </div>
-      </div>
-      <div className="px-8 py-4 space-y-4">
-        <input className="w-full p-2 text-5xl border border-slate-600 bg-neutral-950 rounded-xl"
+    <div className="px-4 py-2 rounded-lg bg-neutral-950 overflow-x-hidden">
+      <div className="space-y-2">
+        <input className="p-1 w-full text-4xl font-bold border border-slate-600 bg-neutral-950 rounded-xl"
         placeholder="Title" {...register("title")} />
-        <div className="p-2 border border-slate-600 bg-neutral-950 rounded-xl min-h-32">
+        <div className="p-1 border border-slate-600 bg-neutral-950 rounded-xl min-h-32">
           <Tiptap name="body" control={control} />
         </div>
+      </div>
+      <div className="flex justify-end items-center mt-2">
+        <Close size={24} onClick={close} />
+        <button className="flex bg-teal-700 mx-2 space-x-2" onClick={handleSubmit(onSubmit)}>
+          post
+        </button>
       </div>
     </div>
   </div>
