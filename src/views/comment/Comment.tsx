@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import Avatar from "@/components/Avatar"
 import { formatDatetime } from "@/utils/datetime"
@@ -11,6 +11,9 @@ export default function Comment({ data: comment }: { data: CommentType }) {
     const [data, setData] = useState(comment);
     const [reply, setReply] = useState(false);
     const [edit, setEdit] = useState(false);
+    useEffect(() => {
+        setData(comment)
+      }, [comment])
     return <div className="w-full">
         <div className="flex relative">
             <div className={`w-[12px] absolute top-[30px] left-[18px] border-l border-slate-800

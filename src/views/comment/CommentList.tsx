@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { gql, useApolloClient } from "@apollo/client"
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { CommentType } from ".";
@@ -46,12 +46,18 @@ const COMMENTS_QUERY = gql`
 
 export default function CommentList({ id, count, comments=[], what='content' }:
   { id: number, count: number, comments: CommentType[], what?: 'content' | 'comment' }) {
-  console.log(comments);
   const [data, setData] = useState({
     last: comments.length,
     offset: 0,
     comments,
   });
+  useEffect(() => {
+    setData({
+      last: comments.length,
+      offset: 0,
+      comments,
+    })
+  }, [comments])
   const client = useApolloClient();
   function fetchComments() {
     client.query({
