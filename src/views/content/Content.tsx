@@ -13,30 +13,9 @@ import Feedback, { FeedbackType } from "@/views/feedback/Feedback";
 import ContentForm from "@/forms/ContentForm";
 import CommentForm from "@/forms/CommentForm";
 import { useParams, useSearchParams } from "react-router-dom";
+import { getCommentSchema } from "@/queries/comment";
 
-export const CONTENT_RELATED_COMMENT_LEN = 2
-export const CONTENT_RELATED_FEEDBACK_LEN = 10
-const COMMENT_SCHEMA = `
-  id
-  body
-  createdAt
-  owner {
-    emojiUnicode
-    firstName
-    lastName
-  }
-  upvoteCount
-  downvoteCount
-  feedback {
-    id
-    vote
-  }
-  feedbacks {
-    id
-    vote
-  }
-  commentCount
-`
+const CONTENT_RELATED_COMMENT_LEN = 2
 const CONTENT_QUERY = gql`
   query getContent($content: ID!, $comment: ID! = -1){
     contents(content: $content) {
@@ -59,29 +38,10 @@ const CONTENT_QUERY = gql`
       }
       upvoteCount
       downvoteCount
-      feedbacks(last: ${CONTENT_RELATED_FEEDBACK_LEN}) {
-        user {
-          firstName
-          lastName
-          emojiUnicode
-        }
-      }
       createdAt
       commentCount
       comments(comment: $comment, last: ${CONTENT_RELATED_COMMENT_LEN}) {
-        ${COMMENT_SCHEMA}
-        comments(last: ${CONTENT_RELATED_COMMENT_LEN}) {
-          ${COMMENT_SCHEMA}
-          comments(last: ${CONTENT_RELATED_COMMENT_LEN}) {
-            ${COMMENT_SCHEMA}
-            comments(last: ${CONTENT_RELATED_COMMENT_LEN}) {
-              ${COMMENT_SCHEMA}
-              comments(last: ${CONTENT_RELATED_COMMENT_LEN}) {
-                ${COMMENT_SCHEMA}
-              }
-            }
-          }
-        }
+        ${getCommentSchema(4)}
       }
     }
   }
@@ -195,6 +155,12 @@ export default function Content() {
         <CommentForm parentId={data.id} close={() => setReply(false)} what="content" />
       }
     </div>
-    <CommentList id={data.id} count={searchParams.get("id") ? 1 : data.commentCount} comments={data.comments} what="content" />
+    <CommentList
+      id={data.id}
+      count={searchParams.get("id") ? 1 : data.commentCount}
+      comments={data.comments}
+      what="content"
+      level={4}
+    />
   </div>
 }

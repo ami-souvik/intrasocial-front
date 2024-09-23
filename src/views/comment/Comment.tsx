@@ -7,7 +7,7 @@ import { CommentType } from "@/views/comment";
 import Actions from "./Actions";
 import CommentForm from "@/forms/CommentForm";
 
-export default function Comment({ data: comment }: { data: CommentType }) {
+export default function Comment({ data: comment, level=0 }: { data: CommentType, level: 0 | 1 | 2 | 3 | 4 }) {
     const [data, setData] = useState(comment);
     const [reply, setReply] = useState(false);
     const [edit, setEdit] = useState(false);
@@ -88,7 +88,7 @@ export default function Comment({ data: comment }: { data: CommentType }) {
             <div className="flex my-4">
                 <div className="w-6" />
                 <div className="w-full">
-                    {data.comments && <CommentList id={data.id} count={data.commentCount} comments={data.comments} what='comment' />}
+                    {data.comments && <CommentList id={data.id} count={data.commentCount} comments={data.comments} what='comment' level={level-1} />}
                 </div>
             </div>
         }
