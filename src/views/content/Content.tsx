@@ -103,7 +103,7 @@ export default function Content() {
   if (!data) return <div className="flex h-screen justify-center items-center">
     <Loader size='lg' />
   </div>
-  return <div className="flex-1 py-4 pt-[72px]">
+  return <div className="flex-1 py-4">
     <div className="flex justify-between">
       <div className="flex space-x-2">
         <Avatar size="sm" emojiUnicode={data.owner.emojiUnicode} />

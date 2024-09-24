@@ -14,7 +14,7 @@ function App() {
   return (
     <div className='h-screen overflow-y-auto'>
       <FeedTop/>
-      <Body>
+      <Body className='pt-[68px]'>
         <Left/>
         <Mid>
           <RouterProvider router={router} />

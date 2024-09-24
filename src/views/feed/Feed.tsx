@@ -44,7 +44,7 @@ export function Feed() {
     <Loader size='lg' />
   </div>
   if (error) return <pre>{error.message}</pre>
-  return <div className="my-2 h-screen pt-[68px] space-y-1">
+  return <div className="my-2 h-full space-y-1">
     {data.contents.map((each: ContentType, idx: number) =>
       <ContentCard key={idx} data={each} />)}
   </div>

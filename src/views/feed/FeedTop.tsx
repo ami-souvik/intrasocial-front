@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { TbUserSquareRounded } from "react-icons/tb";
 import { MdNotificationsNone } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
-import { LuHome } from "react-icons/lu";
+import { MdRssFeed } from "react-icons/md";
 import { Body, Left, Mid, Right } from "@/components/Body";
 
 export default function FeedTop() {
@@ -16,13 +16,13 @@ export default function FeedTop() {
         <Left />
         <Mid>
             <div className="flex justify-end items-center">
+                <button className="px-2" onClick={() => window.open('/', '_self')}>
+                    <MdRssFeed size={28} />
+                </button>
                 <input className="p-2 w-full bg-transparent border border-slate-600" placeholder="Search me" value={search}
                 onChange={e => setSearch(e.target.value)}></input>
                 <button className="flex bg-teal-700 mx-2 space-x-2"
                     onClick={() => window.open('/content/create', '_self')}><CiEdit size={22} /><p>Write</p></button>
-                <button className="px-2" onClick={() => window.open('/', '_self')}>
-                    <LuHome size={28} />
-                </button>
                 <button className="px-2" onClick={() => window.open('/profile', '_self')}>
                     <TbUserSquareRounded size={28} />
                 </button>
