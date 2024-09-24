@@ -3,9 +3,9 @@ import Placeholder from '@tiptap/extension-placeholder'
 import { Color } from '@tiptap/extension-color'
 import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
-import { Editor, EditorContent } from '@tiptap/react'
+import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { forwardRef, useImperativeHandle } from 'react'
+import { forwardRef, useEffect, useImperativeHandle } from 'react'
 
 const extensions = [
   Placeholder.configure({
@@ -35,20 +35,27 @@ export default forwardRef(({ name, control }, ref) => {
         required: true,
       }}
       render={({ field: { onChange, onBlur, value } }) => {
-        const editor = new Editor({
-          extensions: extensions,
-          autofocus: false,
-          content: value,
-          // TODO: the editor is not calling update properly, resulting in not able
-          // to write anything under editor section
-          onUpdate: ({ editor }) => {
-            console.log(editor);
-            // onChange(editor.getHTML());
-          },
-        })
+        const editor = useEditor({
+          extensions,
+          content: value || "",
+          onUpdate({ editor }) {
+            const value = editor.getHTML();
+            onChange(value);
+          },});
+          useEffect(() => {
+            if (!editor) return;
+            let {from, to} = editor.state.selection;
+            editor.commands.setContent(value,
+              false,
+              {
+                preserveWhitespace: "full"
+              }
+            );
+            editor.commands.setTextSelection({from, to});
+          }, [editor, value]);
         useImperativeHandle(ref, () => ({
           focus() {
-            editor?.commands.focus()
+            editor?.commands.focus('end')
           }
         }));
         return <EditorContent editor={editor} />
