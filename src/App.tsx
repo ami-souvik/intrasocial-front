@@ -8,10 +8,11 @@ import Profile from './views/profile/Profile'
 import { Feed } from '@/views/feed/Feed'
 import { Body, Left, Mid, Right } from '@/components/Body'
 import FeedTop from '@/views/feed/FeedTop'
+import ContentAdd from '@/views/content/ContentAdd'
 
 function App() {
   return (
-    <>
+    <div className='h-screen overflow-y-auto'>
       <FeedTop/>
       <Body>
         <Left/>
@@ -20,7 +21,7 @@ function App() {
         </Mid>
         <Right/>
       </Body>
-    </>
+    </div>
   )
 }
 
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Feed />,
+  },
+  {
+    path: "/content/create",
+    element: <ContentAdd />,
   },
   {
     path: "/content/:content",
