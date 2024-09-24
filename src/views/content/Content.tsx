@@ -99,7 +99,9 @@ export default function Content() {
   useEffect(() => {
     queryContent()
   }, [])
-  if(!data) return <pre>Loading...</pre>
+  if (!data) return <div className="flex h-screen justify-center items-center">
+    <div className="w-[4px] text-slate-400 aspect-square rounded translate-x-[-38px] animate-l21"></div>
+  </div>
   return <div className="flex-1 py-4">
     <div className="flex justify-between">
       <div className="flex space-x-2">
@@ -115,7 +117,7 @@ export default function Content() {
         {
           edit ? <div className="flex">
               {/** reply to this comment */}
-              <ContentForm id={data.id} title={data.title} body={data.body}
+              <ContentForm data={data}
               close={() => setEdit(false)} onSuccess={({ title, body }) => {
                 setData(prev => {
                   let obj: ContentType = {}
@@ -131,24 +133,24 @@ export default function Content() {
               <h3 className="text-4xl font-bold text-wrap truncate">{data.title}</h3>
             </div>
             <div className='tiptap px-4 py-2 bg-neutral-950' dangerouslySetInnerHTML={{__html: data.body}}></div>
+            <div className="flex space-x-2 justify-end items-center">
+              <Feedback
+                id={data.id}
+                summary={{
+                  upvoteCount: data.upvoteCount,
+                  downvoteCount: data.downvoteCount,
+                  commentCount: data.commentCount
+                }}
+                data={data.feedback}
+              />
+              <button onClick={() => setReply(true)}><GoComment /></button>
+              <button onClick={() => setEdit(true)}><CiEdit size={22} /></button>
+              <div className="rounded-lg cursor-pointer" onClick={handleDeleteContent}>
+                  <CiCircleRemove size={20} />
+              </div>
+            </div>
           </>
         }
-      </div>
-      <div className="flex space-x-2 justify-end items-center">
-        <Feedback
-          id={data.id}
-          summary={{
-            upvoteCount: data.upvoteCount,
-            downvoteCount: data.downvoteCount,
-            commentCount: data.commentCount
-          }}
-          data={data.feedback}
-        />
-        <button onClick={() => setReply(true)}><GoComment /></button>
-        <button onClick={() => setEdit(true)}><CiEdit size={22} /></button>
-        <div className="rounded-lg cursor-pointer" onClick={handleDeleteContent}>
-            <CiCircleRemove size={20} />
-        </div>
       </div>
       {
         reply &&
