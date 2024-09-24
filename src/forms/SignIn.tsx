@@ -13,7 +13,7 @@ export default function SignIn({ onSubmit }: {
     handleSubmit,
   } = useForm<SignInFormInputs>();
   return (
-    <div className="h-screen w-screen flex justify-center items-center">
+    <div>
       <div className="p-6 border border-slate-600 rounded-lg bg-neutral-900 w-80">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
           <p>Username</p>
