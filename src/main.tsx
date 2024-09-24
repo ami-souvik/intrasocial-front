@@ -6,7 +6,6 @@ import App from '@/App.tsx'
 import '@/index.css'
 import { checkRefresh } from '@/utils/webservice';
 import AuthProvider from './context/AuthContext';
-import AppWrapper from './AppWrapper';
 
 const httpLink = createHttpLink({
   uri: `${import.meta.env.VITE_API_BASE_URL}/graphql/`,
@@ -33,9 +32,7 @@ createRoot(document.getElementById('root')!).render(
   // <StrictMode>
     <ApolloProvider client={client}>
       <AuthProvider>
-        <AppWrapper>
-          <App />
-        </AppWrapper>
+        <App />
       </AuthProvider>
     </ApolloProvider>
   // </StrictMode>,
