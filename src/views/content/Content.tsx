@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import { gql, useApolloClient, useMutation } from "@apollo/client";
 import { CiEdit } from "react-icons/ci";
 import { GoComment } from "react-icons/go";
@@ -12,8 +13,8 @@ import { confirmAction } from "@/utils/popups";
 import Feedback, { FeedbackType } from "@/views/feedback/Feedback";
 import ContentForm from "@/forms/ContentForm";
 import CommentForm from "@/forms/CommentForm";
-import { useParams, useSearchParams } from "react-router-dom";
 import { getCommentSchema } from "@/queries/comment";
+import Loader from "@/components/Loader";
 
 const CONTENT_RELATED_COMMENT_LEN = 2
 const CONTENT_QUERY = gql`
@@ -100,14 +101,14 @@ export default function Content() {
     queryContent()
   }, [])
   if (!data) return <div className="flex h-screen justify-center items-center">
-    <div className="w-[4px] text-slate-400 aspect-square rounded translate-x-[-38px] animate-l21"></div>
+    <Loader size='lg' />
   </div>
-  return <div className="flex-1 py-4">
+  return <div className="flex-1 py-4 pt-[72px]">
     <div className="flex justify-between">
       <div className="flex space-x-2">
         <Avatar size="sm" emojiUnicode={data.owner.emojiUnicode} />
         <div className="flex items-end py-1">
-          <p className="font-bold">{data.owner.firstName} {data.owner.lastName}</p>
+          <p className="font-bold capitalize">{data.owner.firstName} {data.owner.lastName}</p>
           <p className="pl-2 text-sm">posted on {formatDate(new Date(data.createdAt))}</p>
         </div>
       </div>

@@ -3,8 +3,7 @@ import { GoComment } from "react-icons/go"
 import { UserType } from "../user/User"
 import { FeedbackType } from "../feedback/Feedback"
 import { CommentType } from "@/views/comment"
-import Avatar from "@/components/Avatar"
-import { formatDate } from "@/utils/datetime"
+import ContentIdentity from "./ContentIdentity";
 
 export type ContentType = {
     id: number,
@@ -25,17 +24,9 @@ export default function ContentCard({ data }: { data: ContentType}) {
     function handleClick() {
         window.open(`/content/${data.id}`, '_self')
     }
-    return <div className="flex-1 py-4 cursor-pointer hover:bg-gray-500/25 rounded-2xl px-2"
+    return <div className="flex-1 py-2 cursor-pointer hover:bg-gray-500/25 rounded-2xl px-2"
         onClick={handleClick}>
-        <div className="flex justify-between">
-            <div className="flex space-x-2 items-center">
-                <Avatar size="sm" emojiUnicode={data.owner.emojiUnicode} />
-                <div className="flex items-end py-1">
-                    <p className="font-bold">{data.owner.firstName} {data.owner.lastName}</p>
-                    <p className="pl-2 text-sm">posted on {formatDate(new Date(data.createdAt))}</p>
-                </div>
-            </div>
-        </div>
+        <ContentIdentity owner={data.owner} createdAt={data.createdAt} />
         <div className="my-2 border border-slate-600 rounded-xl overflow-hidden">
             <div className="flex flex-1 flex-col py-3 overflow-hidden">
                 <div className="px-4 pb-2 flex justify-between items-center">

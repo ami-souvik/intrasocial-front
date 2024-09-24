@@ -1,13 +1,11 @@
+import { Identity } from "@/views/profile"
+
 export type CommentType = {
     id: number,
-    owner: {
-        emojiUnicode: string,
-        firstName: string,
-        lastName: string,
-    },
+    owner: Identity,
     body: string,
-    createdAt?: string,
-    updatedAt?: string,
+    createdAt: string,
+    updatedAt: string,
     commentCount: number,
     comments: CommentType[],
     upvoteCount: number,

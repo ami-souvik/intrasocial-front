@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
 import Tiptap from "./Tiptap";
+import Loader from "@/components/Loader";
 
 
 type ContentFormInputs = {
@@ -89,10 +90,8 @@ export default function ContentForm({ data: { id, title, body }={}, close, onSuc
         </div>
       </div>
       <div className="flex justify-end items-center mt-2">
-        <button className="flex bg-teal-700 mx-2 space-x-2" onClick={handleSubmit(onSubmit)}>
-          {loading && <div className="w-[32px]">
-            <div className="w-[1px] text-slate-400 aspect-square rounded translate-x-[-16px] translate-y-[12px] animate-l21sm"/>
-          </div>}
+        <button className="flex items-center bg-teal-700 mx-2 space-x-2" onClick={handleSubmit(onSubmit)}>
+          {loading && <Loader />}
           post
         </button>
         {close &&

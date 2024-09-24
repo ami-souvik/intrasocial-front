@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { IoIosAddCircleOutline } from "react-icons/io";
-import Avatar from "@/components/Avatar"
-import { formatDatetime } from "@/utils/datetime"
 import CommentList from "./CommentList";
 import { CommentType } from "@/views/comment";
 import Actions from "./Actions";
 import CommentForm from "@/forms/CommentForm";
+import CommentIdentity from "./CommentIdentity";
 
 export default function Comment({ data: comment, level=0 }: { data: CommentType, level: 0 | 1 | 2 | 3 | 4 }) {
     const [data, setData] = useState(comment);
@@ -16,19 +15,10 @@ export default function Comment({ data: comment, level=0 }: { data: CommentType,
       }, [comment])
     return <div className="w-full">
         <div className="flex relative">
-            <div className={`w-[12px] absolute top-[30px] left-[18px] border-l border-slate-800
+            <div className={`w-[12px] absolute top-[36px] left-[21px] border-l border-slate-800
                 ${ data.commentCount > 0 ? "h-[95px] border-b rounded-bl-2xl" : "h-[99px]"}`} />
             <div className="w-full">
-                <div className="flex space-x-2 items-center">
-                    <div className="w-10 text-center">
-                        <Avatar size="sm" emojiUnicode={data.owner.emojiUnicode} />
-                    </div>
-                    <div className="flex items-center">
-                        <p className="text-sm">{data.owner.firstName} {data.owner.lastName}</p>
-                        <p className="mx-2">.</p>
-                        <p className="text-sm text-slate-500">{formatDatetime(new Date(data.createdAt))}</p>
-                    </div>
-                </div>
+                <CommentIdentity owner={data.owner} createdAt={data.createdAt} />
                 {
                     edit ? <div className="flex">
                         {/** reply to this comment */}
