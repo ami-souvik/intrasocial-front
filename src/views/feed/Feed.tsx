@@ -40,7 +40,7 @@ const CONTENTS_QUERY = gql`
 
 export function Feed() {
   const { data, loading, error } = useQuery(CONTENTS_QUERY);
-  if (loading) return <div className="flex h-screen justify-center items-center">
+  if (loading) return <div className="flex h-10 justify-center items-center">
     <Loader size='lg' />
   </div>
   if (error) return <pre>{error.message}</pre>

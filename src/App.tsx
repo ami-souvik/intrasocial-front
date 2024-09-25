@@ -11,8 +11,14 @@ import FeedTop from '@/views/feed/FeedTop'
 import ContentAdd from '@/views/content/ContentAdd'
 
 function App() {
+  function handleScroll(e) {
+    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    if (bottom) {
+      alert("Reached bottom")
+    }
+  }
   return (
-    <div className='h-screen overflow-y-auto'>
+    <div className='h-screen overflow-y-auto' onScroll={handleScroll}>
       <FeedTop/>
       <Body className='pt-[68px]'>
         <Left/>
