@@ -21,7 +21,7 @@ const CURRENT_QUERY = gql`
 export default function Profile() {
     const { handleSignOut } = useApp();
     const [showEdit, setShowEdit] = useState(false);
-    const { data, loading, error,refetch } = useQuery(CURRENT_QUERY);
+    const { data, loading, error, refetch } = useQuery(CURRENT_QUERY);
     function onUpdate() {
         setShowEdit(false)
         refetch()
