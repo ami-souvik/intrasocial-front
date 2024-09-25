@@ -100,13 +100,13 @@ export default function Content() {
   useEffect(() => {
     queryContent()
   }, [])
-  if (!data) return <div className="flex h-screen justify-center items-center">
+  if (!data) return <div className="flex h-10 justify-center items-center">
     <Loader size='lg' />
   </div>
   return <div className="flex-1 py-4">
     <div className="flex justify-between">
       <div className="flex space-x-2">
-        <Avatar size="sm" emojiUnicode={data.owner.emojiUnicode} />
+        <Avatar size="sm" unicode={data.owner.emojiUnicode} />
         <div className="flex items-end py-1">
           <p className="font-bold capitalize">{data.owner.firstName} {data.owner.lastName}</p>
           <p className="pl-2 text-sm">posted on {formatDate(new Date(data.createdAt))}</p>
