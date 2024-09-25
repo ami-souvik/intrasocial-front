@@ -14,9 +14,9 @@ export function Left({ children }: { children?: any }) {
     )
 }
 
-export function Mid({ children }: { children?: any }) {
+export function Mid({ children, className="" }: { children?: any, className?: string }) {
     return (
-      <div className='w-screen lg:w-1/2 flex justify-center'>
+      <div className={`w-screen lg:w-1/2 flex justify-center ${className}`}>
         <div className="flex-1 max-w-[740px]">
           {children}
         </div>

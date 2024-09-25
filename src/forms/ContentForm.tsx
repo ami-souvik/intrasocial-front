@@ -47,8 +47,7 @@ export default function ContentForm({ data: { id, title, body }={}, close, onSuc
   const {
     control,
     register,
-    handleSubmit,
-    reset
+    handleSubmit
   } = useForm<ContentFormInputs>({
     defaultValues: {
       title, body
@@ -76,7 +75,6 @@ export default function ContentForm({ data: { id, title, body }={}, close, onSuc
     }
     catch(ex) {
       setLoading(false)
-      console.log(ex);
     }
   }
   return <div className="w-full">

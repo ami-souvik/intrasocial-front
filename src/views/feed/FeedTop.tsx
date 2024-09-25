@@ -1,21 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TbUserSquareRounded } from "react-icons/tb";
 import { MdNotificationsNone } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { MdRssFeed } from "react-icons/md";
 import { Body, Left, Mid, Right } from "@/components/Body";
+import NotificationListDialog from "../notification/NotificationListDialog";
 
 export default function FeedTop() {
-    const [atTop, isAtTop] = useState(true);
     const [search, setSearch] = useState('');
-    useEffect(() => {
-        if(window.scrollY == 0) isAtTop(true)
-        else isAtTop(false)
-    }, [window.scrollY])
-    return <Body className={`fixed w-screen top border-b border-slate-700 z-50 backdrop-blur-[5px] ${atTop ? "py-3" : ""}`}>
+    const [logopen, toggleLog] = useState(false);
+    return <Body className="fixed w-screen top border-b border-slate-700 z-50 backdrop-blur-[5px] py-3">
         <Left />
         <Mid>
-            <div className="flex justify-end items-center">
+            <div className="flex justify-end items-center relative">
                 <button className="px-2" onClick={() => window.open('/', '_self')}>
                     <MdRssFeed size={28} />
                 </button>
@@ -26,9 +23,14 @@ export default function FeedTop() {
                 <button className="px-2" onClick={() => window.open('/profile', '_self')}>
                     <TbUserSquareRounded size={28} />
                 </button>
-                <button className="px-2">
+                <button className="px-2" onClick={() => toggleLog(true)}>
                     <MdNotificationsNone size={28} />
                 </button>
+                <div className="absolute top-11 right-0">
+                    <div className="rounded-lg shadow-lg shadow-slate-800">
+                        {logopen && <NotificationListDialog close={() => toggleLog(false)} />}
+                    </div>
+                </div>
             </div>
         </Mid>
         <Right />
