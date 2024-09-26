@@ -1,8 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
       boxShadow: {},
@@ -34,7 +32,7 @@ module.exports = {
         l21sm: 'dots#21-sm .5s infinite alternate linear',
         l21: 'dots#21 .5s infinite alternate linear'
       }
-    },
+    }
   },
-  plugins: [],
+  plugins: []
 }

@@ -1,8 +1,5 @@
 import '@/styles/tiptap.scss'
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom"
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Content from './views/content/Content'
 import Profile from './views/profile/Profile'
 import { Feed } from '@/views/feed/Feed'
@@ -12,14 +9,14 @@ import ContentAdd from '@/views/content/ContentAdd'
 
 function App() {
   return (
-    <div id="app" className='h-screen overflow-y-scroll'>
-      <FeedTop/>
-      <Body className='pt-[68px]'>
-        <Left/>
+    <div id="app" className="h-screen overflow-y-scroll">
+      <FeedTop />
+      <Body className="pt-[68px]">
+        <Left />
         <Mid>
           <RouterProvider router={router} />
         </Mid>
-        <Right/>
+        <Right />
       </Body>
     </div>
   )
@@ -27,23 +24,21 @@ function App() {
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Feed />,
+    path: '/',
+    element: <Feed />
   },
   {
-    path: "/content/create",
-    element: <ContentAdd />,
+    path: '/content/create',
+    element: <ContentAdd />
   },
   {
-    path: "/content/:content",
-    element: <Content />,
+    path: '/content/:content',
+    element: <Content />
   },
   {
-    path: "/profile",
-    element: <Profile />,
-  },
-]);
+    path: '/profile',
+    element: <Profile />
+  }
+])
 
-export default () => (
-  <App />
-)
+export default () => <App />

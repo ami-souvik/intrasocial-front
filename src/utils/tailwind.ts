@@ -1,6 +1,6 @@
-import { ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
- 
+import { ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
 const mediaConfig = {
   theme: {
     screens: {
@@ -16,7 +16,7 @@ const mediaConfig = {
       xl: '1280px',
       // => @media (min-width: 1280px) { ... }
 
-      '2xl': '1536px',
+      '2xl': '1536px'
       // => @media (min-width: 1536px) { ... }
     }
   }
@@ -30,13 +30,15 @@ export function cn(...inputs: ClassValue[]) {
 const matchMedia = window.matchMedia
 const theme = {
   breakpoints: {
-    up: (v: 'sm' | 'md' | 'lg' | 'xl' | '2xl') => matchMedia(`(min-width: ${mediaConfig.theme.screens[v]})`),
-    down: (v: 'sm' | 'md' | 'lg' | 'xl' | '2xl') => matchMedia(`(max-width: ${mediaConfig.theme.screens[v]})`)
+    up: (v: 'sm' | 'md' | 'lg' | 'xl' | '2xl') =>
+      matchMedia(`(min-width: ${mediaConfig.theme.screens[v]})`),
+    down: (v: 'sm' | 'md' | 'lg' | 'xl' | '2xl') =>
+      matchMedia(`(max-width: ${mediaConfig.theme.screens[v]})`)
   }
 }
 
 export const useMediaQuery = (query) => {
-  if(typeof query === 'function') {
+  if (typeof query === 'function') {
     return query(theme).matches
   }
 }

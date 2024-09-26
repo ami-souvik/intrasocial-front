@@ -1,3 +1,3 @@
 export function useEnvars() {
-    return JSON.parse(JSON.stringify(import.meta.env))
+  return JSON.parse(JSON.stringify(import.meta.env))
 }

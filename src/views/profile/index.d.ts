@@ -1,5 +1,5 @@
 export type Identity = {
-    emojiUnicode: string,
-    firstName: string,
-    lastName: string,
+  emojiUnicode: string
+  firstName: string
+  lastName: string
 }
