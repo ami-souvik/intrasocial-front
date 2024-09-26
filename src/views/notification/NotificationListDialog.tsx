@@ -12,9 +12,7 @@ export default function NotificationListDialog({ close }) {
             document.removeEventListener("mousedown", clickedOutside);
         };
     }, [logref]);
-    return <div ref={logref} className="w-[480px]">
-        <div className="flex flex-col p-4 rounded-lg bg-neutral-950">
-            <p className="text-3xl font-bold">Notifications</p>
-        </div>
+    return <div ref={logref} className="w-[480px] bg-neutral-900 border border-slate-600 rounded-xl p-4 space-y-2">
+        <p className="text-3xl font-bold">Notifications</p>
     </div>
 }

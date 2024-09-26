@@ -17,7 +17,7 @@ export default function FeedTop() {
                     <MdRssFeed size={28} />
                 </button>
                 <input className="p-2 w-full bg-transparent border border-slate-600" placeholder="Search me" value={search}
-                onChange={e => setSearch(e.target.value)}></input>
+                    onChange={e => setSearch(e.target.value)}></input>
                 <button className="flex bg-teal-700 mx-2 space-x-2"
                     onClick={() => window.open('/content/create', '_self')}><CiEdit size={22} /><p>Write</p></button>
                 <button className="px-2" onClick={() => window.open('/profile', '_self')}>
@@ -26,10 +26,8 @@ export default function FeedTop() {
                 <button className="px-2" onClick={() => toggleLog(true)}>
                     <MdNotificationsNone size={28} />
                 </button>
-                <div className="absolute top-11 right-0">
-                    <div className="rounded-lg shadow-lg shadow-slate-800">
-                        {logopen && <NotificationListDialog close={() => toggleLog(false)} />}
-                    </div>
+                <div className="absolute top-10 right-0">
+                    {logopen && <NotificationListDialog close={() => toggleLog(false)} />}
                 </div>
             </div>
         </Mid>
