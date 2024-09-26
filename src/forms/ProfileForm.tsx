@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
 import EmojiPicker from "../components/EmojiPicker";
+import Loader from "@/components/Loader";
 
 export type ProfileFormInputs = {
     emojiUnicode: string
@@ -20,6 +22,7 @@ const UPDATE_USER_MUTATION = gql`
       lastName: $lastName,
       email: $email) {
         current {
+          username
           emojiUnicode
           firstName
           lastName
@@ -37,10 +40,13 @@ export default function ProfileForm({ initialValues, close, onSubmitSuccess }: {
     } = useForm<ProfileFormInputs>({
         defaultValues: initialValues
     });
-    const [updateCurrent, { data: currentData, loading, error }] = useMutation(UPDATE_USER_MUTATION);
-    function onSubmit(data: ProfileFormInputs) {
-        updateCurrent({ variables: { ...data } })
-        onSubmitSuccess(currentData)
+    const [updateCurrent] = useMutation(UPDATE_USER_MUTATION);
+    const [loading, setLoading] = useState(false);
+    async function onSubmit(data: ProfileFormInputs) {
+        setLoading(true)
+        let res = await updateCurrent({ variables: { ...data } })
+        setLoading(false)
+        onSubmitSuccess(res.data.updateCurrent.current)
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -56,9 +62,17 @@ export default function ProfileForm({ initialValues, close, onSubmitSuccess }: {
                 </div>
                 <input className="w-full p-1 border border-slate-600 bg-neutral-900" placeholder="Email" {...register("email")} />
             </div>
-            <div className="flex space-x-2">
-                <button className="bg-teal-700" type="submit">Update</button>
-                <button className="bg-teal-700" onClick={close}>Cancel</button>
+            <div className="flex items-center space-x-2">
+                {
+                    loading ? <>
+                        <Loader />
+                        <p>Updating</p>
+                    </>
+                    : <>
+                        <button className="bg-teal-700" type="submit">Update</button>
+                        <button className="bg-teal-700" onClick={close}>Cancel</button>
+                    </>
+                }
             </div>
         </form>
     )
