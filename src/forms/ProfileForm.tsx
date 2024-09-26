@@ -29,7 +29,7 @@ const UPDATE_USER_MUTATION = gql`
   }
 `
 
-export default function ProfileForm({ initialValues, onSubmitSuccess }: { initialValues: ProfileFormInputs, onSubmitSuccess: (v: ProfileFormInputs) => void }) {
+export default function ProfileForm({ initialValues, close, onSubmitSuccess }: { initialValues: ProfileFormInputs, onSubmitSuccess: (v: ProfileFormInputs) => void }) {
     const {
         control,
         register,
@@ -43,13 +43,22 @@ export default function ProfileForm({ initialValues, onSubmitSuccess }: { initia
         onSubmitSuccess(currentData)
     }
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center bg-neutral-900 border border-slate-600 rounded-xl p-4 space-y-2">
-            <EmojiPicker name="emojiUnicode" control={control} />
-            <input className="p-2 border border-slate-600 bg-neutral-900" placeholder="First Name" {...register("firstName")} />
-            <input className="p-2 border border-slate-600 bg-neutral-900" placeholder="Last Name" {...register("lastName")} />
-            <input className="p-2 border border-slate-600 bg-neutral-900" placeholder="Email" {...register("email")} />
-            <div className="flex justify-end">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+            <div className="space-y-2">
+                <EmojiPicker name="emojiUnicode" control={control} />
+                <div className="flex">
+                    <p className="opacity-50">@</p>
+                    <p className="italic">{initialValues.username}</p>
+                </div>
+                <div className="flex space-x-2">
+                    <input className="w-full p-1 border border-slate-600 bg-neutral-900" placeholder="First Name" {...register("firstName")} />
+                    <input className="w-full p-1 border border-slate-600 bg-neutral-900" placeholder="Last Name" {...register("lastName")} />
+                </div>
+                <input className="w-full p-1 border border-slate-600 bg-neutral-900" placeholder="Email" {...register("email")} />
+            </div>
+            <div className="flex space-x-2">
                 <button className="bg-teal-700" type="submit">Update</button>
+                <button className="bg-teal-700" onClick={close}>Cancel</button>
             </div>
         </form>
     )
