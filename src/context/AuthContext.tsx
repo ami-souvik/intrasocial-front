@@ -3,7 +3,7 @@ import axios from 'axios';
 import SignIn, { type SignInFormInputs } from '@/views/guest/SignIn';
 import { useEnvars } from '../hooks/useEnvars';
 import usePersistState from '../hooks/usePersistState';
-import { checkRefresh, Callout } from '@/utils/webservice';
+import { checkRefresh } from '@/utils/webservice';
 import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
@@ -42,22 +42,6 @@ export default function AuthProvider({ children }: { children: any }) {
   function handleSignOut() {
     setToken(tokenDefault)
   }
-  async function get(path: string) {
-    const t = await checkRefresh(token)
-    if(!t) {
-      setToken(tokenDefault)
-      return;
-    }
-    return new Callout(t.access).get(path)
-  }
-  async function post<T>(path: string, body: T) {
-    const t = await checkRefresh(token)
-    if(!t) {
-      setToken(tokenDefault)
-      return;
-    }
-    return new Callout(t.access).post(path, body)
-  }
 
   // ApolloClient: GraphQL
   const httpLink = createHttpLink({
@@ -85,7 +69,7 @@ export default function AuthProvider({ children }: { children: any }) {
   });
   if(!(token.access || token.refresh)) return <SignIn onSubmit={handleSignIn} />
   return (
-    <AuthContext.Provider value={{ get, post, handleSignOut, ...token }}>
+    <AuthContext.Provider value={{ handleSignOut, ...token }}>
       <ApolloProvider client={client}>
       {children }
       </ApolloProvider>
@@ -93,6 +77,6 @@ export default function AuthProvider({ children }: { children: any }) {
   )
 }
 
-export function useApp() {
+export function useAuth() {
   return useContext(AuthContext)
 }
