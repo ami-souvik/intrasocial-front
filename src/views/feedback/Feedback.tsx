@@ -62,7 +62,7 @@ export default function Feedback({
       createFeedback({ variables: { id, what, vote } }).then((res) => {
         setFeedback(res.data?.createFeedback?.feedback)
         setSummary((prev) => {
-          let summary = prev
+          const summary = prev
           if (feedback?.vote === 'U') summary.upvoteCount -= 1
           else if (feedback?.vote === 'D') summary.downvoteCount -= 1
           if (vote === 'U') summary.upvoteCount += 1
@@ -74,7 +74,7 @@ export default function Feedback({
       deleteFeedback({ variables: { id: feedback.id } }).then((res) => {
         setFeedback(null)
         setSummary((prev) => {
-          let summary = prev
+          const summary = prev
           if (vote === 'U') summary.upvoteCount -= 1
           else summary.downvoteCount -= 1
           return summary

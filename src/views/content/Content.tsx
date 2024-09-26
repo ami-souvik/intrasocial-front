@@ -177,7 +177,7 @@ export default function Content() {
             what="content"
             onSuccess={(data) => {
               setData((prev) => {
-                let cloned = JSON.parse(JSON.stringify(prev))
+                const cloned = JSON.parse(JSON.stringify(prev))
                 cloned.comments.unshift({
                   ...data,
                   upvoteCount: 0,

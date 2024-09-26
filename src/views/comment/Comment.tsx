@@ -62,7 +62,7 @@ export default function Comment({
                     close={() => setReply(false)}
                     onSuccess={(data) => {
                       setData((prev) => {
-                        let cloned = JSON.parse(JSON.stringify(prev))
+                        const cloned = JSON.parse(JSON.stringify(prev))
                         cloned.comments.unshift({
                           ...data,
                           upvoteCount: 0,

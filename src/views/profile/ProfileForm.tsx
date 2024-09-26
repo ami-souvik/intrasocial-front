@@ -49,7 +49,7 @@ export default function ProfileForm({
   const [loading, setLoading] = useState(false)
   async function onSubmit(data: ProfileFormInputs) {
     setLoading(true)
-    let res = await updateCurrent({ variables: { ...data } })
+    const res = await updateCurrent({ variables: { ...data } })
     setLoading(false)
     onSubmitSuccess(res.data.updateCurrent.current)
   }

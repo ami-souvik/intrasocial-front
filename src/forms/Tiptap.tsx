@@ -43,7 +43,7 @@ export default forwardRef(({ name, control }, ref) => {
         })
         useEffect(() => {
           if (!editor) return
-          let { from, to } = editor.state.selection
+          const { from, to } = editor.state.selection
           editor.commands.setContent(value, false, {
             preserveWhitespace: 'full'
           })
